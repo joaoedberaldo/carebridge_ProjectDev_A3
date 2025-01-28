@@ -1,8 +1,12 @@
-﻿namespace CareBridgeBackend.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CareBridgeBackend.Models
 {
     public class MedicalHistory
     {
-        public int Id { get; set; } 
+        public int Id { get; set; }
+
+        [Required]
         public int PatientId { get; set; } 
         public Patient Patient { get; set; } 
 

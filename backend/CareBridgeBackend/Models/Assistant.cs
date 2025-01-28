@@ -2,7 +2,6 @@
 {
     public class Assistant : User
     {
-        public ICollection<Doctor> Doctors { get; set; }
-        public ICollection<Appointment> Appointments { get; set; }
+        public ICollection<Doctor> Doctors { get; set; } = new List<Doctor>();
     }
 }
