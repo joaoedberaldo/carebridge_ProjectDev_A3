@@ -14,5 +14,7 @@
 
         public DateTime AssignedDate { get; set; }
         public string Notes { get; set; }
+
+        public ICollection<Treatment> Treatments { get; set; }
     }
 }
