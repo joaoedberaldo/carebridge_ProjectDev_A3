@@ -2,7 +2,7 @@
 
 namespace CareBridgeBackend.Models
 {
-    public class Patient
+    public class Patient : User
     {
         [Required]
         [DataType(DataType.Date)]
