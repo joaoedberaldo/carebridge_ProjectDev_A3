@@ -11,6 +11,6 @@ namespace CareBridgeBackend.Models
         public string Name { get; set; } 
         public string Description { get; set; } 
         public int CreatedByDoctorId { get; set; } 
-        public Doctor CreatedByDoctor { get; set; }
+        public User CreatedByDoctor { get; set; }
     }
 }

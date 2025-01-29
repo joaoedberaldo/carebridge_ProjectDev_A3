@@ -8,7 +8,7 @@ namespace CareBridgeBackend.Models
 
         [Required]
         public int PatientId { get; set; } 
-        public Patient Patient { get; set; } 
+        public User Patient { get; set; } 
 
         public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
         public ICollection<PatientDiagnostic> PatientDiagnostics { get; set; } = new List<PatientDiagnostic>();

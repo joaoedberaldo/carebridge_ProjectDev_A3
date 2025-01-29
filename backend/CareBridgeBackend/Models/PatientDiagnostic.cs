@@ -12,11 +12,11 @@ namespace CareBridgeBackend.Models
 
         [Required]
         public int PatientId { get; set; } 
-        public Patient Patient { get; set; }
+        public User Patient { get; set; }
 
         [Required]
         public int DoctorId { get; set; } 
-        public Doctor Doctor { get; set; }
+        public User Doctor { get; set; }
 
 
         [Required]

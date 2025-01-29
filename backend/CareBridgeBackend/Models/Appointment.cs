@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CareBridgeBackend.Models
 {
@@ -10,13 +11,20 @@ namespace CareBridgeBackend.Models
         [DataType(DataType.DateTime)]
         public DateTime AppointmentDate { get; set; }
 
+        // Doctor (User with Role = Doctor)
         [Required]
-        public int DoctorId { get; set; } 
-        public Doctor Doctor { get; set; } 
+        public int DoctorId { get; set; }
 
+        [ForeignKey("DoctorId")]
+        public User Doctor { get; set; }
+
+        // Patient (User with Role = Patient)
         [Required]
-        public int PatientId { get; set; } 
-        public Patient Patient { get; set; } 
+        public int PatientId { get; set; }
+
+        [ForeignKey("PatientId")]
+        public User Patient { get; set; }
+
         public string Notes { get; set; }
     }
 }
