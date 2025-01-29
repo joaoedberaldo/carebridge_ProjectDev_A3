@@ -22,13 +22,13 @@ namespace CareBridgeBackend.Data
             // Many-to-Many: Doctor to Assistants
             modelBuilder.Entity<DoctorAssistant>()
                 .HasOne(da => da.Doctor)
-                .WithMany()
+                .WithMany(u => u.DoctorsAssisted)
                 .HasForeignKey(da => da.DoctorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<DoctorAssistant>()
                 .HasOne(da => da.Assistant)
-                .WithMany()
+                .WithMany(u => u.AssistedBy)
                 .HasForeignKey(da => da.AssistantId)
                 .OnDelete(DeleteBehavior.Restrict);
 
@@ -60,14 +60,14 @@ namespace CareBridgeBackend.Data
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<PatientDiagnostic>()
-                .HasOne(pd => pd.Patient)
-                .WithMany(u => u.PatientDiagnostics)
-                .HasForeignKey(pd => pd.PatientId)
+                .HasOne(pd => pd.DiagnosticTemplate)
+                .WithMany()
+                .HasForeignKey(pd => pd.DiagnosticTemplateId)
                 .OnDelete(DeleteBehavior.Restrict);
 
             modelBuilder.Entity<PatientDiagnostic>()
                 .HasOne(pd => pd.Doctor)
-                .WithMany(u => u.PatientDiagnostics)
+                .WithMany(u => u.DiagnosedPatients)
                 .HasForeignKey(pd => pd.DoctorId)
                 .OnDelete(DeleteBehavior.Restrict);
 

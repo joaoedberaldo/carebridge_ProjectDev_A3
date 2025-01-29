@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CareBridgeBackend.Models
 {
@@ -10,15 +10,16 @@ namespace CareBridgeBackend.Models
 
         [Required]
         public int DoctorId { get; set; }
-        [ForeignKey("DoctorId")]
+
+        [ForeignKey(nameof(DoctorId))]
         public User Doctor { get; set; }
 
         [Required]
         public int AssistantId { get; set; }
-        [ForeignKey("AssistantId")]
+
+        [ForeignKey(nameof(AssistantId))]
         public User Assistant { get; set; }
 
-        // Optional: Add a timestamp for when the assignment was made
         public DateTime AssignedDate { get; set; } = DateTime.UtcNow;
     }
 }
