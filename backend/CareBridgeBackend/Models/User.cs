@@ -44,7 +44,10 @@ namespace CareBridgeBackend.Models
         public string? LicenseNumber { get; set; }
 
         // Relationships
-        public ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
+
+        // Appointment Navigation Properties
+        public ICollection<Appointment> AppointmentsAsDoctor { get; set; } = new List<Appointment>();
+        public ICollection<Appointment> AppointmentsAsPatient { get; set; } = new List<Appointment>();
         public ICollection<PatientDiagnostic> PatientDiagnostics { get; set; } = new List<PatientDiagnostic>();
 
         // Doctor-Assistant Many-to-Many Relationship

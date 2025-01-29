@@ -32,28 +32,27 @@ namespace CareBridgeBackend.Data
                 .HasForeignKey(da => da.AssistantId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // ✅ One-to-One: Patient to MedicalHistory
+            // One-to-One: Patient to MedicalHistory
             modelBuilder.Entity<MedicalHistory>()
                 .HasOne(mh => mh.Patient)
                 .WithOne(u => u.MedicalHistory)
                 .HasForeignKey<MedicalHistory>(mh => mh.PatientId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // ✅ One-to-Many: Appointments (Doctor & Patient)
+            // One-to-Many: Appointments (Doctor & Patient)
             modelBuilder.Entity<Appointment>()
                 .HasOne(a => a.Doctor)
-                .WithMany(u => u.Appointments)
+                .WithMany(u => u.AppointmentsAsDoctor)  
                 .HasForeignKey(a => a.DoctorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-
             modelBuilder.Entity<Appointment>()
                 .HasOne(a => a.Patient)
-                .WithMany(u => u.Appointments)
+                .WithMany(u => u.AppointmentsAsPatient)  
                 .HasForeignKey(a => a.PatientId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // ✅ One-to-Many: PatientDiagnostics
+            // One-to-Many: PatientDiagnostics
             modelBuilder.Entity<PatientDiagnostic>()
                 .HasOne(pd => pd.DiagnosticTemplate)
                 .WithMany()
@@ -72,21 +71,21 @@ namespace CareBridgeBackend.Data
                 .HasForeignKey(pd => pd.DoctorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // ✅ One-to-Many: Treatments
+            // One-to-Many: Treatments
             modelBuilder.Entity<Treatment>()
                 .HasOne(t => t.PatientDiagnostic)
                 .WithMany(pd => pd.Treatments)
                 .HasForeignKey(t => t.PatientDiagnosticId)
                 .OnDelete(DeleteBehavior.Cascade);
 
-            // ✅ One-to-Many: Diagnostic Templates (Created by Doctor)
+            // One-to-Many: Diagnostic Templates (Created by Doctor)
             modelBuilder.Entity<DiagnosticTemplate>()
                 .HasOne(d => d.CreatedByDoctor)
                 .WithMany()
                 .HasForeignKey(d => d.CreatedByDoctorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // ✅ Seed Data for Users
+            // Seed Data for Users
             modelBuilder.Entity<User>().HasData(
                 new User
                 {
@@ -156,7 +155,7 @@ namespace CareBridgeBackend.Data
                 }
             );
 
-            // ✅ Seed Data for Diagnostic Templates
+            // Seed Data for Diagnostic Templates
             modelBuilder.Entity<DiagnosticTemplate>().HasData(
                 new DiagnosticTemplate
                 {
