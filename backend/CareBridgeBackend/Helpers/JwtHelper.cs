@@ -1,4 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
+﻿using CareBridgeBackend.Models;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -10,32 +11,34 @@ namespace CareBridgeBackend.Helpers
         private readonly string _secretKey;
         private readonly string _issuer;
         private readonly string _audience;
-        private readonly int _tokenExpirationInHours;
 
-        public JwtHelper(IConfiguration configuration)
+        public JwtHelper(string secretKey, string issuer, string audience)
         {
-            _secretKey = configuration["JwtSettings:SecretKey"];
-            _issuer = configuration["JwtSettings:Issuer"];
-            _audience = configuration["JwtSettings:Audience"];
-            _tokenExpirationInHours = int.Parse(configuration["JwtSettings:TokenExpirationInHours"]);
+            if (Encoding.UTF8.GetBytes(secretKey).Length < 32)
+                throw new ArgumentException("Secret key must be at least 32 characters long.", nameof(secretKey));
+
+            _secretKey = secretKey;
+            _issuer = issuer;
+            _audience = audience;
         }
 
-        public string GenerateToken(string userId, string role)
+        public string GenerateToken(int userId, string email, UserRole role)
         {
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secretKey));
             var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             var claims = new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, userId),
-                new Claim(ClaimTypes.Role, role)
+                new Claim(ClaimTypes.NameIdentifier, userId.ToString()),
+                new Claim(ClaimTypes.Name, email),
+                new Claim(ClaimTypes.Role, role.ToString())
             };
 
             var token = new JwtSecurityToken(
                 _issuer,
                 _audience,
                 claims,
-                expires: DateTime.UtcNow.AddHours(_tokenExpirationInHours),
+                expires: DateTime.UtcNow.AddHours(1),
                 signingCredentials: credentials
             );
 

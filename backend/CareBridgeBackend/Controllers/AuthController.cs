@@ -27,7 +27,7 @@ namespace CareBridgeBackend.Controllers
         /// <param name="dto"></param>
         /// <returns></returns>
         [HttpPost("register")]
-        public async Task<IActionResult> Register(UserRegisterDto dto)
+        public async Task<IActionResult> Register([FromBody]UserRegisterDto dto)
         {
             // Check if the email is already registered
             var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
@@ -64,7 +64,7 @@ namespace CareBridgeBackend.Controllers
             if (user == null || !PasswordHelper.VerifyPassword(dto.Password, user.Password))
                 return Unauthorized("Invalid email or password.");
 
-            var token = _jwtHelper.GenerateToken(user.Id.ToString(), user.Role.ToString());
+            var token = _jwtHelper.GenerateToken(user.Id, user.Email, user.Role);
             return Ok(new { Token = token });
         }
     }
