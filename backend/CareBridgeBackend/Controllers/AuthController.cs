@@ -21,28 +21,42 @@ namespace CareBridgeBackend.Controllers
             _jwtHelper = jwtHelper;
         }
 
+        /// <summary>
+        /// Register a new user
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [HttpPost("register")]
         public async Task<IActionResult> Register(UserRegisterDto dto)
         {
+            // Check if the email is already registered
             var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
             if (existingUser != null)
                 return BadRequest("Email is already registered.");
+
+            // Hash the password
+            var hashedPassword = PasswordHelper.HashPassword(dto.Password);
 
             var user = new User
             {
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
                 Email = dto.Email,
-                Password = PasswordHelper.HashPassword(dto.Password),
+                Password = hashedPassword,
                 Role = dto.Role,
                 DateOfBirth = dto.DateOfBirth
             };
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-            return Ok("User registered successfully.");
+            return Ok(new { Message = "User registered successfully." });
         }
 
+        /// <summary>
+        /// Authenticates a user and returns a JWT token
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
         [HttpPost("login")]
         public async Task<IActionResult> Login(UserLoginDto dto)
         {
