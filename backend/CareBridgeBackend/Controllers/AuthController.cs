@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CareBridgeBackend.Data;
+using CareBridgeBackend.DTOs;
+using CareBridgeBackend.Helpers;
+using CareBridgeBackend.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace CareBridgeBackend.Controllers
 {
@@ -7,16 +12,46 @@ namespace CareBridgeBackend.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        [HttpPost("register")]
-        public IActionResult Register()
+        private readonly ApplicationDbContext _context;
+        private readonly JwtHelper _jwtHelper;
+
+        public AuthController(ApplicationDbContext context, JwtHelper jwtHelper)
         {
-            return Ok(new { Message = "User registered successfully (mock response)." });
+            _context = context;
+            _jwtHelper = jwtHelper;
+        }
+
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(UserRegisterDto dto)
+        {
+            var existingUser = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+            if (existingUser != null)
+                return BadRequest("Email is already registered.");
+
+            var user = new User
+            {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Email = dto.Email,
+                Password = PasswordHelper.HashPassword(dto.Password),
+                Role = dto.Role,
+                DateOfBirth = dto.DateOfBirth
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return Ok("User registered successfully.");
         }
 
         [HttpPost("login")]
-        public IActionResult Login()
+        public async Task<IActionResult> Login(UserLoginDto dto)
         {
-            return Ok(new { Token = "mock-jwt-token" });
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+            if (user == null || !PasswordHelper.VerifyPassword(dto.Password, user.Password))
+                return Unauthorized("Invalid email or password.");
+
+            var token = _jwtHelper.GenerateToken(user.Id.ToString(), user.Role.ToString());
+            return Ok(new { Token = token });
         }
     }
 }
