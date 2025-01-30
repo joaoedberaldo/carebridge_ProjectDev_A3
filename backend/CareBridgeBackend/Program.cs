@@ -4,6 +4,7 @@ using CareBridgeBackend.Helpers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 namespace CareBridgeBackend
@@ -47,11 +48,39 @@ namespace CareBridgeBackend
             // Authorization Middleware
             builder.Services.AddAuthorization();
 
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CareBridge API", Version = "v1" });
+
+                // Add JWT Authentication to Swagger UI
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "Enter 'Bearer YOUR_TOKEN_HERE' (with space between 'Bearer' and the token)",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                        },
+                        new string[] { }
+                    }
+                });
+
+            });
+
+
             // Controllers
             builder.Services.AddControllers();   
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
 
+            // Enable CORS for Swagger UI
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowSwagger",
@@ -59,7 +88,7 @@ namespace CareBridgeBackend
                         .WithOrigins("http://localhost:5156")
                         .AllowAnyMethod()
                         .AllowAnyHeader());
-            });    
+            });
 
             var app = builder.Build();
 
