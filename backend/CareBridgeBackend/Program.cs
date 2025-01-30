@@ -44,10 +44,11 @@ namespace CareBridgeBackend
                     };
                 });
 
-            builder.Services.AddControllers();
+            // Authorization Middleware
+            builder.Services.AddAuthorization();
 
-            #region Added by Venicio
-
+            // Controllers
+            builder.Services.AddControllers();   
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
@@ -58,10 +59,7 @@ namespace CareBridgeBackend
                         .WithOrigins("http://localhost:5156")
                         .AllowAnyMethod()
                         .AllowAnyHeader());
-            });
-
-            #endregion
-
+            });    
 
             var app = builder.Build();
 
