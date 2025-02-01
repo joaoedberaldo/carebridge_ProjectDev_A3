@@ -1,10 +1,12 @@
 ﻿using CareBridgeBackend.Data;
+using CareBridgeBackend.DTOs;
 using CareBridgeBackend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace CareBridgeBackend.Controllers
 {
@@ -38,14 +40,21 @@ namespace CareBridgeBackend.Controllers
         /// Create a new schedule entry for the logged-in doctor.
         /// </summary>
         [HttpPost]
-        public async Task<IActionResult> CreateSchedule([FromBody] DoctorSchedule schedule)
+        public async Task<IActionResult> CreateSchedule([FromBody] DoctorScheduleCreateDto dto)
         {
-            if (schedule == null)
+            if (dto == null)
                 return BadRequest("Invalid schedule data.");
 
             var doctorId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
-            // Ensure the schedule is created for the logged-in doctor.
-            schedule.DoctorId = doctorId;
+
+            // Map the DTO to the DoctorSchedule model.
+            var schedule = new DoctorSchedule
+            {
+                StartTime = dto.StartTime,
+                EndTime = dto.EndTime,
+                Description = dto.Description,
+                DoctorId = doctorId  
+            };
 
             _context.DoctorSchedules.Add(schedule);
             await _context.SaveChangesAsync();
@@ -57,7 +66,7 @@ namespace CareBridgeBackend.Controllers
         /// Update an existing schedule entry for the logged-in doctor.
         /// </summary>
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateSchedule(int id, [FromBody] DoctorSchedule updatedSchedule)
+        public async Task<IActionResult> UpdateSchedule(int id, [FromBody] DoctorScheduleCreateDto dto)
         {
             var doctorId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
@@ -69,9 +78,9 @@ namespace CareBridgeBackend.Controllers
                 return Unauthorized("You are not authorized to update this schedule.");
 
             // Update allowed fields.
-            schedule.StartTime = updatedSchedule.StartTime;
-            schedule.EndTime = updatedSchedule.EndTime;
-            schedule.Description = updatedSchedule.Description;
+            schedule.StartTime = dto.StartTime;
+            schedule.EndTime = dto.EndTime;
+            schedule.Description = dto.Description;
 
             await _context.SaveChangesAsync();
 
