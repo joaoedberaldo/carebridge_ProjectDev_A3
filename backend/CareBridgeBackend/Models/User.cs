@@ -56,5 +56,8 @@ namespace CareBridgeBackend.Models
         // Doctor-Assistant Many-to-Many Relationship
         public ICollection<DoctorAssistant> DoctorsAssisted { get; set; } = new List<DoctorAssistant>();
         public ICollection<DoctorAssistant> AssistedBy { get; set; } = new List<DoctorAssistant>();
+
+        // Schedules
+        public ICollection<DoctorSchedule> DoctorSchedules { get; set; } = new List<DoctorSchedule>();
     }
 }
