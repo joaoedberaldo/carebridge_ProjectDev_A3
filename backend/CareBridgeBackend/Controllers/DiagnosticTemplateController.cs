@@ -28,6 +28,14 @@ namespace CareBridgeBackend.Controllers
         {
             var templates = await _context.DiagnosticTemplates
                 .Include(dt => dt.CreatedByDoctor)
+                .Select(dt => new DiagnosticTemplateDto
+                {
+                    Id = dt.Id,
+                    Name = dt.Name,
+                    Description = dt.Description,
+                    CreatedByDoctorId = dt.CreatedByDoctorId,
+                    CreatedByDoctorName = dt.CreatedByDoctor.FirstName + " " + dt.CreatedByDoctor.LastName
+                })
                 .ToListAsync();
             return Ok(templates);
         }
@@ -40,6 +48,14 @@ namespace CareBridgeBackend.Controllers
         {
             var template = await _context.DiagnosticTemplates
                 .Include(dt => dt.CreatedByDoctor)
+                .Select(dt => new DiagnosticTemplateDto
+                {
+                    Id = dt.Id,
+                    Name = dt.Name,
+                    Description = dt.Description,
+                    CreatedByDoctorId = dt.CreatedByDoctorId,
+                    CreatedByDoctorName = dt.CreatedByDoctor.FirstName + " " + dt.CreatedByDoctor.LastName
+                })
                 .FirstOrDefaultAsync(dt => dt.Id == id);
 
             if (template == null)
