@@ -1,5 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CareBridgeBackend.Data;
+using CareBridgeBackend.DTOs;
+using CareBridgeBackend.Helpers;
+using CareBridgeBackend.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CareBridgeBackend.Controllers
 {
@@ -7,16 +14,94 @@ namespace CareBridgeBackend.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        [HttpPost("register")]
-        public IActionResult Register()
+        private readonly ApplicationDbContext _context;
+        private readonly JwtHelper _jwtHelper;
+
+        public AuthController(ApplicationDbContext context, JwtHelper jwtHelper)
         {
-            return Ok(new { Message = "User registered successfully (mock response)." });
+            _context = context;
+            _jwtHelper = jwtHelper;
         }
 
-        [HttpPost("login")]
-        public IActionResult Login()
+        /// <summary>
+        /// Register a new user
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpPost("register")]
+        public async Task<IActionResult> Register([FromBody] UserRegisterDto dto)
         {
-            return Ok(new { Token = "mock-jwt-token" });
+            if (dto == null)
+                return BadRequest("Invalid user data.");
+
+            // Check if the email is already registered
+            var existingUser = await _context.Users.AnyAsync(u => u.Email == dto.Email);
+            if (existingUser)
+                return BadRequest("Email is already registered.");
+
+            // Hash the password
+            var hashedPassword = PasswordHelper.HashPassword(dto.Password);
+
+            // Create new user
+            var user = new User
+            {
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Email = dto.Email,
+                Password = hashedPassword,
+                Role = dto.Role,
+                DateOfBirth = dto.DateOfBirth
+            };
+
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+            return Ok(new { Message = "User registered successfully." });
+        }
+
+        /// <summary>
+        /// Authenticates a user and returns a JWT token
+        /// </summary>
+        /// <param name="dto"></param>
+        /// <returns></returns>
+        [HttpPost("login")]
+        public async Task<IActionResult> Login([FromBody] UserLoginDto dto)
+        {
+            if (dto == null)
+                return BadRequest("Invalid login request.");
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
+            if (user == null || !PasswordHelper.VerifyPassword(dto.Password, user.Password))
+                return Unauthorized("Invalid email or password.");
+
+            var token = _jwtHelper.GenerateToken(user.Id, user.Email, user.Role);
+            return Ok(new { Token = token });
+        }
+
+        /// <summary>
+        /// Gets the current logged-in user information
+        /// </summary>
+        /// <returns></returns>
+        [Authorize]
+        [HttpGet("me")]
+        public async Task<IActionResult> GetMyProfile()
+        {
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            if (string.IsNullOrEmpty(userId))
+                return Unauthorized("User ID not found in token.");
+
+            var user = await _context.Users.FindAsync(int.Parse(userId));
+            if (user == null)
+                return NotFound("User not found.");
+
+            return Ok(new
+            {
+                user.Id,
+                user.FirstName,
+                user.LastName,
+                user.Email,
+                user.Role,
+                user.DateOfBirth
+            });
         }
     }
 }

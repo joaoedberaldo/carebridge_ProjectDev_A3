@@ -1,6 +1,11 @@
 
 using CareBridgeBackend.Data;
+using CareBridgeBackend.Helpers;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
 
 namespace CareBridgeBackend
 {
@@ -10,19 +15,72 @@ namespace CareBridgeBackend
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // Add services to the container.
+            // DB Context.
 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+            // Read JWT settings
+            var jwtSettings = builder.Configuration.GetSection("JwtSettings");
+            var secretKey = jwtSettings["SecretKey"];
+            var issuer = jwtSettings["Issuer"];
+            var audience = jwtSettings["Audience"];
 
-            builder.Services.AddControllers();
+            // Register JWT Helper
+            builder.Services.AddSingleton(new JwtHelper(secretKey, issuer, audience));
 
-#region Added by Venicio
-            
+            // Authentication
+            var key = Encoding.UTF8.GetBytes(secretKey);
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = issuer,
+                        ValidAudience = audience,
+                        IssuerSigningKey = new SymmetricSecurityKey(key)
+                    };
+                });
+
+            // Authorization Middleware
+            builder.Services.AddAuthorization();
+
+            builder.Services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CareBridge API", Version = "v1" });
+
+                // Add JWT Authentication to Swagger UI
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = "Enter 'Bearer YOUR_TOKEN_HERE' (with space between 'Bearer' and the token)",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference { Type = ReferenceType.SecurityScheme, Id = "Bearer" }
+                        },
+                        new string[] { }
+                    }
+                });
+
+            });
+
+
+            // Controllers
+            builder.Services.AddControllers();   
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
 
+            // Enable CORS for Swagger UI
             builder.Services.AddCors(options =>
             {
                 options.AddPolicy("AllowSwagger",
@@ -31,9 +89,6 @@ namespace CareBridgeBackend
                         .AllowAnyMethod()
                         .AllowAnyHeader());
             });
-
-            #endregion
-
 
             var app = builder.Build();
 
@@ -52,6 +107,8 @@ namespace CareBridgeBackend
 
             app.UseHttpsRedirection();
 
+
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

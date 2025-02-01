@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CareBridgeBackend.Data;
+using CareBridgeBackend.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CareBridgeBackend.Controllers
 {
@@ -7,19 +12,57 @@ namespace CareBridgeBackend.Controllers
     [ApiController]
     public class DoctorsController : ControllerBase
     {
-        [HttpGet]
-        public IActionResult GetDoctors()
+        private readonly ApplicationDbContext _context;
+
+        public DoctorsController(ApplicationDbContext context)
         {
-            return Ok(new[] {
-            new { Id = 1, Name = "Dr. Smith", Specialty = "Cardiology" },
-            new { Id = 2, Name = "Dr. Jane", Specialty = "Pediatrics" }
-        });
+            _context = context;
         }
 
-        [HttpGet("{id}")]
-        public IActionResult GetDoctor(int id)
+        // <summary>
+        /// Get all doctors (Public)
+        /// </summary>
+        [HttpGet]
+        public async Task<IActionResult> GetDoctors()
         {
-            return Ok(new { Id = id, Name = "Dr. Smith", Specialty = "Cardiology" });
+            var doctors = await _context.Users
+                .Where(u => u.Role == UserRole.Doctor)
+                .Select(d => new
+                {
+                    d.Id,
+                    d.FirstName,
+                    d.LastName,
+                    d.Specialization,
+                    d.LicenseNumber
+                })
+                .ToListAsync();
+
+            return Ok(doctors);
+        }
+
+        /// <summary>
+        /// Get a doctor by ID (Authenticated users)
+        /// </summary>
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetDoctor(int id)
+        {
+            var doctor = await _context.Users
+                .Where(u => u.Role == UserRole.Doctor && u.Id == id)
+                .Select(d => new
+                {
+                    d.Id,
+                    d.FirstName,
+                    d.LastName,
+                    d.Specialization,
+                    d.LicenseNumber
+                })
+                .FirstOrDefaultAsync();
+
+            if (doctor == null)
+                return NotFound("Doctor not found.");
+
+            return Ok(doctor);
         }
 
         [HttpPost("{id}/schedule")]
@@ -27,11 +70,6 @@ namespace CareBridgeBackend.Controllers
         {
             return Ok(new { Message = $"Schedule added for Doctor {id} (mock response)." });
         }
-
-        [HttpPut("{id}/pricing")]
-        public IActionResult UpdateDoctorPricing(int id)
-        {
-            return Ok(new { Message = $"Pricing updated for Doctor {id} (mock response)." });
-        }
+        
     }
 }

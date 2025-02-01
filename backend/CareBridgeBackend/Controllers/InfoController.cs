@@ -10,10 +10,11 @@ namespace CareBridgeBackend.Controllers
         [HttpGet("plans")]
         public IActionResult GetPlans()
         {
-            return Ok(new[] {
-            new { PlanName = "Ontario Health Plan", Description = "Covers basic healthcare." },
-            new { PlanName = "Extended Health Plan", Description = "Covers additional services." }
-        });
+            return Ok(new[]
+            {
+                new { PlanName = "Ontario Health Plan", Description = "Covers basic healthcare." },
+                new { PlanName = "Extended Health Plan", Description = "Covers additional services." }
+            });
         }
     }
 }

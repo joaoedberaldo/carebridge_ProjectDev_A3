@@ -1,5 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CareBridgeBackend.Data;
+using Microsoft.AspNetCore.Authorization;
+using CareBridgeBackend.DTOs;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 
 namespace CareBridgeBackend.Controllers
 {
@@ -7,16 +12,58 @@ namespace CareBridgeBackend.Controllers
     [ApiController]
     public class UsersController : ControllerBase
     {
-        [HttpGet("{id}")]
-        public IActionResult GetUser(int id)
+        private readonly ApplicationDbContext _context;
+
+        public UsersController(ApplicationDbContext context)
         {
-            return Ok(new { Id = id, Name = "Mock User", Role = "Patient" });
+            _context = context;
         }
 
-        [HttpPut("{id}")]
-        public IActionResult UpdateUser(int id)
+        /// <summary>
+        /// Get user details (Authenticated users)
+        /// </summary>
+        [Authorize]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUser(int id)
         {
-            return Ok(new { Message = $"User {id} updated successfully (mock response)." });
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                return NotFound("User not found.");
+
+            return Ok(new
+            {
+                user.Id,
+                user.FirstName,
+                user.LastName,
+                user.Email,
+                user.Role,
+                user.PhoneNumber
+            });
+        }
+
+        /// <summary>
+        /// Update user profile (Authenticated users)
+        /// </summary>
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UserUpdateDto dto)
+        {
+            var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            var userRole = User.FindFirstValue(ClaimTypes.Role);
+
+            if (userId != id && userRole != "Doctor")
+                return Unauthorized("You can only update your own profile.");
+
+            var user = await _context.Users.FindAsync(id);
+            if (user == null)
+                return NotFound("User not found.");
+
+            user.FirstName = dto.FirstName ?? user.FirstName;
+            user.LastName = dto.LastName ?? user.LastName;
+            user.PhoneNumber = dto.PhoneNumber ?? user.PhoneNumber;
+
+            await _context.SaveChangesAsync();
+            return Ok(new { Message = "User updated successfully." });
         }
     }
 }
