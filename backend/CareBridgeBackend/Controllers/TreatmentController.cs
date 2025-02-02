@@ -51,7 +51,13 @@ namespace CareBridgeBackend.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Here, additional authorization logic could be added if necessary.
+            // Validate that the PatientDiagnostic exists
+            bool diagnosticExists = await _context.PatientDiagnostics
+                .AnyAsync(pd => pd.Id == dto.PatientDiagnosticId);
+            if (!diagnosticExists)
+                return BadRequest("The provided PatientDiagnosticId does not exist. Please create a diagnostic first.");
+
+            // Map the DTO to a Treatment entity.
             var treatment = new Treatment
             {
                 Name = dto.Name,
