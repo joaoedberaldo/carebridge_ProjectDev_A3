@@ -74,6 +74,27 @@ namespace CareBridgeBackend.Controllers
         }
 
         /// <summary>
+        /// Remove an assistant from a doctor (Doctors only)
+        /// </summary>
+        [Authorize(Roles = "Doctor")]
+        [HttpDelete("{assistantId}/remove")]
+        public async Task<IActionResult> RemoveAssistant(int assistantId)
+        {
+            var doctorId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var assignment = await _context.DoctorAssistants
+                .FirstOrDefaultAsync(da => da.DoctorId == doctorId && da.AssistantId == assistantId);
+
+            if (assignment == null)
+                return NotFound("No assignment found for the specified assistant and doctor.");
+
+            _context.DoctorAssistants.Remove(assignment);
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = "Assistant removed successfully." });
+        }
+
+        /// <summary>
         /// Get patient appointments for the doctor the assistant is assigned to (Assistants only)
         /// </summary>
         [Authorize(Roles = "Assistant")]

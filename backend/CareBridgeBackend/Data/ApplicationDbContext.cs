@@ -15,8 +15,8 @@ namespace CareBridgeBackend.Data
         public DbSet<MedicalHistory> MedicalHistories { get; set; }
         public DbSet<Treatment> Treatments { get; set; }
         public DbSet<DoctorAssistant> DoctorAssistants { get; set; }
-
         public DbSet<DoctorReview> DoctorReviews { get; set; }
+        public DbSet<DoctorSchedule> DoctorSchedules { get; set; }
 
         // Configuring relationships
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -99,6 +99,13 @@ namespace CareBridgeBackend.Data
                 .WithMany()
                 .HasForeignKey(dr => dr.PatientId)
                 .OnDelete(DeleteBehavior.NoAction);
+
+            // Doctor Schedules Relationships
+            modelBuilder.Entity<DoctorSchedule>()
+                .HasOne(ds => ds.Doctor)
+                .WithMany(u => u.DoctorSchedules)
+                .HasForeignKey(ds => ds.DoctorId)
+                .OnDelete(DeleteBehavior.Cascade);
 
             // Seed Data for Users
             modelBuilder.Entity<User>().HasData(

@@ -1,4 +1,5 @@
 ﻿using CareBridgeBackend.Data;
+using CareBridgeBackend.DTOs;
 using CareBridgeBackend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -43,15 +44,28 @@ namespace CareBridgeBackend.Controllers
         /// </summary>
         [Authorize(Roles = "Doctor")]
         [HttpPost]
-        public async Task<IActionResult> CreateDiagnostic([FromBody] PatientDiagnostic diagnostic)
+        public async Task<IActionResult> CreateDiagnostic([FromBody] PatientDiagnosticCreateDto dto)
         {
-            if (diagnostic == null)
-                return BadRequest("Invalid diagnostic data.");
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            // Get the logged-in doctor's ID
+            var doctorId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var diagnostic = new PatientDiagnostic
+            {
+                DiagnosticTemplateId = dto.DiagnosticTemplateId,
+                PatientId = dto.PatientId,
+                DoctorId = doctorId,  // Set the creating doctor from the token
+                DateDiagnosed = dto.DateDiagnosed,
+                Notes = dto.Notes
+            };
 
             _context.PatientDiagnostics.Add(diagnostic);
             await _context.SaveChangesAsync();
 
-            return Ok(new { Message = "Diagnostic added successfully.", diagnostic.Id });
+            return Ok(new { Message = "Diagnostic added successfully.", DiagnosticId = diagnostic.Id });
         }
+
     }
 }
