@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { FaHome, FaUserMd, FaFileMedical, FaCalendarAlt, FaQuestionCircle, FaBell, FaUser } from "react-icons/fa";
 import { Menu, MenuItem } from "@mui/material";
 import Logo from "/logo.jpg";
-import "./App.css";
+import "./Dashboard.css";
 
 const Sidebar = () => {
 
@@ -68,13 +68,11 @@ const DashboardContent = () => {
   return (
     <div className="dashboard-content">
       <div className="card">Patient Information Here</div>
+      <div className="card">Notifications Here (maybe)</div>
       <div className="card">Next Appointments Here</div>
       <div className="card">
-        <p>Specialty</p>
-        <p>Doctor - Status</p>
-        <p>E.g. Cardiologist</p>
-        <p>Dr. John Doe - Waiting results of heart exam</p>
-      </div>
+        <p>Dr. John Doe - Cardiologist - Waiting results of heart exam</p>
+      </div>      
     </div>
   );
 };
