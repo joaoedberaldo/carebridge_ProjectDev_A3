@@ -9,22 +9,22 @@ const sections = {
   home: {
     title: "Welcome to CareBridge",
     description: "Connecting you with the best healthcare services.",
-    image: "/images/home.jpg"
+    image: "/Home.jpg"
   },
   about: {
     title: "About CareBridge",
     description: "CareBridge is designed to make healthcare access easier and more efficient.",
-    image: "/images/about.jpg"
+    image: "/About.jpg"
   },
   contact: {
     title: "Contact Us",
     description: "Get in touch with us for any inquiries or support.",
-    image: "/images/contact.jpg"
+    image: "/Contact.jpg"
   },
   features: {
     title: "Our Features",
     description: "Explore the features that make CareBridge the best healthcare platform.",
-    image: "/images/features.jpg"
+    image: "/Feature.jpg"
   }
 };
 
