@@ -2,7 +2,8 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #bfdbfe;
+  /* background-color: #bfdbfe; */
+  background-color: #f0f4f8;
   /* display: flex; */
   height: 100vh;
   overflow: hidden;
@@ -51,7 +52,6 @@ body {
   background-color: #93c5fd;
 }
 
-/* Layout Fix - Ensure Sidebar and Dashboard are Side by Side */
 .app-container {
   display: flex;
   width: 100%;
@@ -106,7 +106,8 @@ body {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background-color: #e0f2fe;
+  /* background-color: #e0f2fe; */
+  background-color: #f0f4f8;
   padding: 1.25rem;
 }
 
@@ -118,7 +119,8 @@ body {
 }
 
 .card {
-  background-color: #d1d5db;
+  /* background-color: #d1d5db; */
+  background-color: white;
   padding: 1.25rem;
   border-radius: 0.5rem;
 }

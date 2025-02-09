@@ -10,7 +10,8 @@ body {
 /* Navbar */
 .navbar {
   width: 100%;
-  background-color: #1e3a8a;
+  /* background-color: #1e3a8a; */
+  background-color: #bfdbfe;
   padding: 1rem;
   display: flex;
   justify-content: center;
@@ -25,14 +26,15 @@ body {
 }
 
 .navbar li {
-  color: white;
+  /* color: white; */
+  color: black;
   cursor: pointer;
   font-size: 1.2rem;
   transition: color 0.3s ease-in-out;
 }
 
 .navbar li:hover {
-  color: #93c5fd;
+  font-weight: bold;
 }
 
 /* Main Container */
@@ -58,7 +60,7 @@ body {
 }
 
 .info-image {
-  width: 200px;
+  width: 400px;
   border-radius: 10px;
 }
 
