@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { FaHome, FaUserMd, FaFileMedical, FaCalendarAlt, FaQuestionCircle, FaBell, FaUser } from "react-icons/fa";
 import { Menu, MenuItem } from "@mui/material";
 import Logo from "/logo.jpg";
-import "./Dashboard.css";
+import "../../styles/Dashboard.css";
 
 const Sidebar = () => {
 
