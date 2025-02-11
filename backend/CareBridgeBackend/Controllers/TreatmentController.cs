@@ -55,7 +55,7 @@ namespace CareBridgeBackend.Controllers
             bool diagnosticExists = await _context.PatientDiagnostics
                 .AnyAsync(pd => pd.Id == dto.PatientDiagnosticId);
             if (!diagnosticExists)
-                return BadRequest("The provided PatientDiagnosticId does not exist. Please create a diagnostic first.");
+                return BadRequest(new { Message = "The provided PatientDiagnosticId does not exist. Please create a diagnostic first." });
 
             // Map the DTO to a Treatment entity.
             var treatment = new Treatment
@@ -84,7 +84,7 @@ namespace CareBridgeBackend.Controllers
 
             var treatment = await _context.Treatments.FindAsync(id);
             if (treatment == null)
-                return NotFound("Treatment not found.");
+                return NotFound(new { Message = "Treatment not found." });
 
             // Update fields if provided
             if (!string.IsNullOrEmpty(dto.Name))
@@ -108,7 +108,7 @@ namespace CareBridgeBackend.Controllers
         {
             var treatment = await _context.Treatments.FindAsync(id);
             if (treatment == null)
-                return NotFound("Treatment not found.");
+                return NotFound(new { Message = "Treatment not found." });
 
             _context.Treatments.Remove(treatment);
             await _context.SaveChangesAsync();
