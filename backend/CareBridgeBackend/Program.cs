@@ -83,12 +83,12 @@ namespace CareBridgeBackend
             // Enable CORS for Swagger UI
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowSwagger",
+                options.AddPolicy("AllowAllOrigins",
                     builder => builder
-                        .WithOrigins("http://localhost:5156")
+                        .WithOrigins("http://localhost:5156", "http://localhost:3000")
                         .AllowAnyMethod()
                         .AllowAnyHeader());
-            });
+            });          
 
             var app = builder.Build();
 
@@ -103,7 +103,7 @@ namespace CareBridgeBackend
                 });
             }
 
-            app.UseCors("AllowSwagger");
+            app.UseCors("AllowAllOrigins");
 
             app.UseHttpsRedirection();
 
