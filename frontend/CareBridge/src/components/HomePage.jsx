@@ -52,7 +52,7 @@ function MainPage () {
           </div>
         </div>
         <div className="button-container">
-            <button className="button" onClick={() => navigate('/register')}>Register</button>
+            <button className="button" onClick={() => navigate('/signup')}>Register</button>
             <button className="button" onClick={() => navigate('/login')}>Login</button>
           </div>
       </div>
