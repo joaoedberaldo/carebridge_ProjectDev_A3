@@ -60,7 +60,7 @@ namespace CareBridgeBackend.Controllers
                 .FirstOrDefaultAsync();
 
             if (doctor == null)
-                return NotFound("Doctor not found.");
+                return NotFound(new { Message = "Doctor not found." });
 
             return Ok(doctor);
         }
