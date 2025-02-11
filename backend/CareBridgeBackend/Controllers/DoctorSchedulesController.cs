@@ -43,7 +43,7 @@ namespace CareBridgeBackend.Controllers
         public async Task<IActionResult> CreateSchedule([FromBody] DoctorScheduleCreateDto dto)
         {
             if (dto == null)
-                return BadRequest("Invalid schedule data.");
+                return BadRequest(new { Message = "Invalid schedule data." });
 
             var doctorId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
@@ -72,10 +72,10 @@ namespace CareBridgeBackend.Controllers
 
             var schedule = await _context.DoctorSchedules.FindAsync(id);
             if (schedule == null)
-                return NotFound("Schedule not found.");
+                return NotFound(new { Message = "Schedule not found." });
 
             if (schedule.DoctorId != doctorId)
-                return Unauthorized("You are not authorized to update this schedule.");
+                return Unauthorized(new { Message = "You are not authorized to update this schedule." });
 
             // Update allowed fields.
             schedule.StartTime = dto.StartTime;
@@ -97,10 +97,10 @@ namespace CareBridgeBackend.Controllers
 
             var schedule = await _context.DoctorSchedules.FindAsync(id);
             if (schedule == null)
-                return NotFound("Schedule not found.");
+                return NotFound(new { Message = "Schedule not found." });
 
             if (schedule.DoctorId != doctorId)
-                return Unauthorized("You are not authorized to delete this schedule.");
+                return Unauthorized(new { Message = "You are not authorized to delete this schedule." });
 
             _context.DoctorSchedules.Remove(schedule);
             await _context.SaveChangesAsync();
