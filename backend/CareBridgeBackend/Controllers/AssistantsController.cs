@@ -53,13 +53,13 @@ namespace CareBridgeBackend.Controllers
 
             var assistant = await _context.Users.FindAsync(assistantId);
             if (assistant == null || assistant.Role != UserRole.Assistant)
-                return BadRequest("Invalid assistant.");
+                return BadRequest(new { Message = "Invalid assistant." });
 
             var existingAssignment = await _context.DoctorAssistants
                 .FirstOrDefaultAsync(da => da.DoctorId == doctorId && da.AssistantId == assistantId);
 
             if (existingAssignment != null)
-                return BadRequest("Assistant is already assigned to this doctor.");
+                return BadRequest(new { Message = "Assistant is already assigned to this doctor." });
 
             var newAssignment = new DoctorAssistant
             {
@@ -86,7 +86,7 @@ namespace CareBridgeBackend.Controllers
                 .FirstOrDefaultAsync(da => da.DoctorId == doctorId && da.AssistantId == assistantId);
 
             if (assignment == null)
-                return NotFound("No assignment found for the specified assistant and doctor.");
+                return NotFound(new { Message = "No assignment found for the specified assistant and doctor." });
 
             _context.DoctorAssistants.Remove(assignment);
             await _context.SaveChangesAsync();
@@ -107,7 +107,7 @@ namespace CareBridgeBackend.Controllers
                 .AnyAsync(da => da.DoctorId == doctorId && da.AssistantId == assistantId);
 
             if (!isAssigned)
-                return Unauthorized("You are not assigned to this doctor.");
+                return Unauthorized(new { Message = "You are not assigned to this doctor." });
 
             var appointments = await _context.Appointments
                 .Where(a => a.DoctorId == doctorId)
