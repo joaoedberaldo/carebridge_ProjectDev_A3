@@ -29,11 +29,11 @@ namespace CareBridgeBackend.Controllers
             var patientId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             if (patientId != review.PatientId)
-                return Unauthorized("You can only submit reviews for your own appointments.");
+                return Unauthorized(new { Message = "You can only submit reviews for your own appointments." });
 
             var doctorExists = await _context.Users.AnyAsync(u => u.Id == doctorId && u.Role == UserRole.Doctor);
             if (!doctorExists)
-                return NotFound("Doctor not found.");
+                return NotFound(new { Message = "Doctor not found." });
 
             review.DoctorId = doctorId;
             review.ReviewDate = DateTime.UtcNow;
