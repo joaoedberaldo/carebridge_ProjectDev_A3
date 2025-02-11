@@ -31,12 +31,12 @@ namespace CareBridgeBackend.Controllers
 
             // Ensure the patient is booking for themselves
             if (userId != dto.PatientId)
-                return Unauthorized("Patients can only book appointments for themselves.");
+                return Unauthorized(new { Message = "Patients can only book appointments for themselves." });
 
             // Validate doctor existence
             var doctorExists = await _context.Users.AnyAsync(u => u.Id == dto.DoctorId && u.Role == UserRole.Doctor);
             if (!doctorExists)
-                return BadRequest("Invalid doctor ID.");
+                return BadRequest(new { Message = "Invalid doctor ID." });
 
             var appointment = new Appointment
             {
@@ -65,7 +65,7 @@ namespace CareBridgeBackend.Controllers
                 .FirstOrDefaultAsync(a => a.Id == id);
 
             if (appointment == null)
-                return NotFound("Appointment not found.");
+                return NotFound(new { Message = "Appointment not found." });
 
             return Ok(new
             {
@@ -89,7 +89,7 @@ namespace CareBridgeBackend.Controllers
 
             var appointment = await _context.Appointments.FindAsync(id);
             if (appointment == null)
-                return NotFound("Appointment not found.");
+                return NotFound(new { Message = "Appointment not found." });
 
             // If user is a doctor, they can update their own appointments
             if (userRole == "Doctor" && appointment.DoctorId == userId)
@@ -108,7 +108,7 @@ namespace CareBridgeBackend.Controllers
                     .AnyAsync(da => da.AssistantId == userId && da.DoctorId == appointment.DoctorId);
 
                 if (!isAssignedToDoctor)
-                    return Unauthorized("You are not authorized to manage this doctor's appointments.");
+                    return Unauthorized(new { Message = "You are not authorized to manage this doctor's appointments." });
 
                 appointment.AppointmentDate = dto.AppointmentDate ?? appointment.AppointmentDate;
                 appointment.Notes = dto.Notes ?? appointment.Notes;
@@ -117,7 +117,7 @@ namespace CareBridgeBackend.Controllers
                 return Ok(new { Message = $"Appointment {id} updated successfully by Assistant." });
             }
 
-            return Unauthorized("You are not authorized to update this appointment.");
+            return Unauthorized(new { Message = "You are not authorized to update this appointment." });
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace CareBridgeBackend.Controllers
 
             var appointment = await _context.Appointments.FindAsync(id);
             if (appointment == null)
-                return NotFound("Appointment not found.");
+                return NotFound(new { Message = "Appointment not found." });
 
             // If user is the doctor assigned to the appointment, they can cancel it
             if (userRole == "Doctor" && appointment.DoctorId == userId)
@@ -157,14 +157,14 @@ namespace CareBridgeBackend.Controllers
                     .AnyAsync(da => da.AssistantId == userId && da.DoctorId == appointment.DoctorId);
 
                 if (!isAssignedToDoctor)
-                    return Unauthorized("You are not authorized to cancel this doctor's appointments.");
+                    return Unauthorized(new { Message = "You are not authorized to cancel this doctor's appointments." });
 
                 _context.Appointments.Remove(appointment);
                 await _context.SaveChangesAsync();
                 return Ok(new { Message = $"Appointment {id} cancelled successfully by Assistant." });
             }
 
-            return Unauthorized("You are not authorized to cancel this appointment.");
+            return Unauthorized(new { Message = "You are not authorized to cancel this appointment." });
         }
     }
 }
