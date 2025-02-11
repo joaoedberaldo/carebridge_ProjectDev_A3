@@ -85,7 +85,7 @@ namespace CareBridgeBackend
             {
                 options.AddPolicy("AllowAllOrigins",
                     builder => builder
-                        .WithOrigins("http://localhost:5156", "http://localhost:3000")
+                        .WithOrigins("http://localhost:5156", "http://localhost:5173")
                         .AllowAnyMethod()
                         .AllowAnyHeader());
             });          
