@@ -28,7 +28,7 @@ namespace CareBridgeBackend.Controllers
         {
             var user = await _context.Users.FindAsync(id);
             if (user == null)
-                return NotFound("User not found.");
+                return NotFound(new { Message = "User not found." });
 
             return Ok(new
             {
@@ -52,11 +52,11 @@ namespace CareBridgeBackend.Controllers
             var userRole = User.FindFirstValue(ClaimTypes.Role);
 
             if (userId != id && userRole != "Doctor")
-                return Unauthorized("You can only update your own profile.");
+                return Unauthorized(new { Message = "You can only update your own profile." });
 
             var user = await _context.Users.FindAsync(id);
             if (user == null)
-                return NotFound("User not found.");
+                return NotFound(new { Message = "User not found." });
 
             user.FirstName = dto.FirstName ?? user.FirstName;
             user.LastName = dto.LastName ?? user.LastName;
