@@ -32,12 +32,12 @@ namespace CareBridgeBackend.Controllers
         public async Task<IActionResult> Register([FromBody] UserRegisterDto dto)
         {
             if (dto == null)
-                return BadRequest("Invalid user data.");
+                return BadRequest(new { Message = "Invalid user data." });
 
             // Check if the email is already registered
             var existingUser = await _context.Users.AnyAsync(u => u.Email == dto.Email);
             if (existingUser)
-                return BadRequest("Email is already registered.");
+                return BadRequest(new { Message = "Email is already registered." });
 
             // Hash the password
             var hashedPassword = PasswordHelper.HashPassword(dto.Password);
@@ -55,7 +55,13 @@ namespace CareBridgeBackend.Controllers
 
             _context.Users.Add(user);
             await _context.SaveChangesAsync();
-            return Ok(new { Message = "User registered successfully." });
+
+            return CreatedAtAction(
+                nameof(UsersController.GetUser),  
+                "Users",                          
+                new { id = user.Id },             
+                new { Message = "User registered successfully." } 
+            );
         }
 
         /// <summary>
@@ -67,11 +73,11 @@ namespace CareBridgeBackend.Controllers
         public async Task<IActionResult> Login([FromBody] UserLoginDto dto)
         {
             if (dto == null)
-                return BadRequest("Invalid login request.");
+                return BadRequest(new { Message = "Invalid login request." });
 
             var user = await _context.Users.FirstOrDefaultAsync(u => u.Email == dto.Email);
             if (user == null || !PasswordHelper.VerifyPassword(dto.Password, user.Password))
-                return Unauthorized("Invalid email or password.");
+                return Unauthorized(new { Message = "Invalid email or password." });
 
             var token = _jwtHelper.GenerateToken(user.Id, user.Email, user.Role);
             return Ok(new { Token = token });
@@ -87,11 +93,11 @@ namespace CareBridgeBackend.Controllers
         {
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             if (string.IsNullOrEmpty(userId))
-                return Unauthorized("User ID not found in token.");
+                return Unauthorized(new { Message = "User ID not found in token." });
 
             var user = await _context.Users.FindAsync(int.Parse(userId));
             if (user == null)
-                return NotFound("User not found.");
+                return NotFound(new { Message = "User not found." });
 
             return Ok(new
             {
