@@ -28,7 +28,7 @@ namespace CareBridgeBackend.Controllers
         {
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (userId != id)
-                return Unauthorized("You can only view your own appointments.");
+                return Unauthorized(new { Message = "You can only view your own appointments." });
 
             var appointments = await _context.Appointments
                 .Where(a => a.PatientId == id)
@@ -54,7 +54,7 @@ namespace CareBridgeBackend.Controllers
             var userRole = User.FindFirstValue(ClaimTypes.Role);
 
             if (userRole == "Patient" && userId != id)
-                return Unauthorized("You can only view your own diagnostics.");
+                return Unauthorized(new { Message = "You can only view your own diagnostics." });
 
             var diagnostics = await _context.PatientDiagnostics
                 .Where(pd => pd.PatientId == id)
@@ -82,7 +82,7 @@ namespace CareBridgeBackend.Controllers
 
             // If the requester is a patient, they can only view their own medical history.
             if (userRole == "Patient" && userId != id)
-                return Unauthorized("You can only view your own medical history.");
+                return Unauthorized(new { Message = "You can only view your own medical history." });
 
             // Retrieve the medical history for the given patient id.
             var history = await _context.MedicalHistories
@@ -110,7 +110,7 @@ namespace CareBridgeBackend.Controllers
                 .FirstOrDefaultAsync();
 
             if (history == null)
-                return NotFound("Medical history not found for the specified patient.");
+                return NotFound(new { Message = "Medical history not found for the specified patient." });
 
             return Ok(history);
         }

@@ -59,7 +59,7 @@ namespace CareBridgeBackend.Controllers
                 .FirstOrDefaultAsync(dt => dt.Id == id);
 
             if (template == null)
-                return NotFound("Diagnostic template not found.");
+                return NotFound(new { Message = "Diagnostic template not found." });
 
             return Ok(template);
         }
@@ -102,12 +102,12 @@ namespace CareBridgeBackend.Controllers
 
             var template = await _context.DiagnosticTemplates.FindAsync(id);
             if (template == null)
-                return NotFound("Diagnostic template not found.");
+                return NotFound(new { Message = "Diagnostic template not found." });
 
             // Ensure the logged-in doctor is the creator of the template.
             var doctorId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (template.CreatedByDoctorId != doctorId)
-                return Unauthorized("You are not authorized to update this template.");
+                return Unauthorized(new { Message = "You are not authorized to update this template." });
 
             template.Name = dto.Name;
             template.Description = dto.Description;
@@ -126,12 +126,12 @@ namespace CareBridgeBackend.Controllers
         {
             var template = await _context.DiagnosticTemplates.FindAsync(id);
             if (template == null)
-                return NotFound("Diagnostic template not found.");
+                return NotFound(new { Message = "Diagnostic template not found." });
 
             // Ensure the logged-in doctor is the creator of the template.
             var doctorId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             if (template.CreatedByDoctorId != doctorId)
-                return Unauthorized("You are not authorized to delete this template.");
+                return Unauthorized(new { Message = "You are not authorized to delete this template." });
 
             _context.DiagnosticTemplates.Remove(template);
             await _context.SaveChangesAsync();

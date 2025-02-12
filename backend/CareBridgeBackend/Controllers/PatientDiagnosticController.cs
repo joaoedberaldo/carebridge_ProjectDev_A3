@@ -30,7 +30,7 @@ namespace CareBridgeBackend.Controllers
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             if (userId != patientId)
-                return Unauthorized("You can only view your own diagnostics.");
+                return Unauthorized(new { Message = "You can only view your own diagnostics." });
 
             var diagnostics = await _context.PatientDiagnostics
                 .Where(pd => pd.PatientId == patientId)
