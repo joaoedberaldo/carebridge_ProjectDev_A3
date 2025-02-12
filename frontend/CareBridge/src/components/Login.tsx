@@ -18,7 +18,7 @@ const Login = () => {
     // Reset error before new request
     setApiError(null); 
     //check the data content
-    console.log(data);
+    // console.log(data);
 
     try {
       const response = await fetch('http://localhost:5156/api/auth/login', {
@@ -30,7 +30,11 @@ const Login = () => {
       });
 
       if (response.ok) {
-        console.log('User registered successfully');
+        // console.log('User registered successfully');
+        const responseData = await response.json();
+        console.log(responseData);
+        localStorage.setItem("token", responseData.token); // Store JWT token
+        // localStorage.setItem("userId", responseData.id); // Store User ID
         navigate('/dashboard');
       } else {
         // log the server's response to the console.

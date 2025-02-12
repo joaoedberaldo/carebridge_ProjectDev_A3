@@ -38,7 +38,7 @@ function MainPage () {
         <ul>
           <li onClick={() => setActiveSection(sections.home)}>Home</li>
           <li onClick={() => setActiveSection(sections.about)}>About</li>
-          <li onClick={() => navigate('/dashboard')}>Dashboard</li>
+          <li onClick={() => navigate('/login')}>Dashboard</li>
           <li onClick={() => setActiveSection(sections.contact)}>Contact</li>
           <li onClick={() => setActiveSection(sections.features)}>Features</li>
         </ul>
