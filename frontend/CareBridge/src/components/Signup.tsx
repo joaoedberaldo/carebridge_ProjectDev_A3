@@ -28,7 +28,7 @@ const Signup = () => {
       ...data,
       role: Number(data.role), // Ensure role is sent as an integer
     };
-       console.log(formattedData);// check formated data
+      //  console.log(formattedData);// check formated data
     try {
       const response = await fetch('http://localhost:5156/api/auth/register', {
         method: 'POST',
