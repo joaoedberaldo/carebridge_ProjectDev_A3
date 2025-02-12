@@ -27,6 +27,9 @@ namespace CareBridgeBackend.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateAppointment([FromBody] AppointmentUpdateDto dto)
         {
+            if (dto == null)
+                return BadRequest(new { Message = "Invalid appointment data." });
+
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             // Ensure the patient is booking for themselves
@@ -49,7 +52,11 @@ namespace CareBridgeBackend.Controllers
             _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
 
-            return Ok(new { Message = "Appointment created successfully.", AppointmentId = appointment.Id });
+            return CreatedAtAction(
+                nameof(GetAppointment),
+                new { id = appointment.Id },
+                new { Message = "Appointment created successfully.", AppointmentId = appointment.Id }
+            );
         }
 
         /// <summary>
@@ -84,6 +91,9 @@ namespace CareBridgeBackend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAppointment(int id, [FromBody] AppointmentUpdateDto dto)
         {
+            if (dto == null)
+                return BadRequest(new { Message = "Invalid update data." });
+
             var userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
             var userRole = User.FindFirstValue(ClaimTypes.Role);
 
