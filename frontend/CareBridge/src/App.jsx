@@ -7,6 +7,7 @@ import HomePage from './components/HomePage'
 import Dashboard from './components/Dashboard';
 import Signup from './components/Signup';
 import Login from './components/Login';
+import EditProfile from './components/EditProfile';
 
 function App () {
     return (
@@ -16,6 +17,7 @@ function App () {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/editprofile" element={<EditProfile />} />
         </Routes>
       </Router>
     );

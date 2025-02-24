@@ -74,6 +74,13 @@ body {
   font-weight: bold;
 }
 
+.user-role-image {
+  width: 50px;  /* Adjust size as needed */
+  height: 50px;
+  margin-left: 10px;
+  border-radius: 50%;
+}
+
 .topbar-icons {
   display: flex;
   gap: 1rem;

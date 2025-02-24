@@ -1,10 +1,12 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
-import { FaHome, FaUserMd, FaFileMedical, FaCalendarAlt, FaQuestionCircle, FaBell, FaUser } from "react-icons/fa";
+import { FaHome, FaUserMd, FaFileMedical, FaCalendarAlt, FaQuestionCircle, FaUser } from "react-icons/fa";
 import { Menu, MenuItem } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import Logo from "/logo.jpg";
+import DoctorImage from "../assets/Doctor.png";  // Import doctor image
+import PatientImage from "../assets/Patient.png"; // Import patient image
 import "../../styles/Dashboard.css";
 
 const Sidebar = () => {
@@ -45,24 +47,29 @@ const TopBar = ({user}) => {
     setAnchorEl(null);
   };
 
+  const handleProfileClick = () => {
+    navigate("/editprofile");
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token"); // Clear stored token
     navigate("/"); // Redirect to main page
   };
 
+  // Choose image based on role (0 = Doctor, 1 = Patient)
+  const userImage = user?.role === 0 ? DoctorImage : PatientImage;
+
   return (
     <div className="topbar">
-      <h2 className="welcome-text">Welcome {user?.firstName || "User"}!</h2>
+      <h2 className="welcome-text">
+        Welcome {user?.firstName || "User"}! &nbsp;
+        <img src={userImage} alt="User Role" className="user-role-image" />
+      </h2>
       <div className="topbar-icons">
-        {/* <div className="notification">
-          <FaBell className="icon" />
-          <span className="notification-badge">6</span>
-        </div> */}
         <div>
           <FaUser className="icon" onClick={handleClick} />
           <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-            <MenuItem onClick={handleClose}>Profile</MenuItem>
-            <MenuItem onClick={handleClose}>Settings</MenuItem>
+            <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
         </div>
@@ -72,12 +79,26 @@ const TopBar = ({user}) => {
 };
 
 const DashboardContent = ({user}) => {
+  // Map role number to text
+  const roleMapping = {
+    0: "Doctor",
+    1: "Patient",
+    2: "Assistant",
+  };
+
+  // Format Date of Birth (if available)
+  const formattedDOB = user?.dateOfBirth 
+    ? new Date(user.dateOfBirth).toISOString().split("T")[0] 
+    : "N/A";
+
   return (
     <div className="dashboard-content">
-      <div className="card">Patient Information 
+      <div className="card">Personal Information 
         <p>&nbsp;&nbsp;&nbsp;&nbsp;First Name: {user?.firstName}</p> 
         <p>&nbsp;&nbsp;&nbsp;&nbsp;Last Name: {user?.lastName}</p> 
         <p>&nbsp;&nbsp;&nbsp;&nbsp;Email: {user?.email}</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;Role: {roleMapping[user?.role] || "Unknown"}</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;Date of Birth: {formattedDOB}</p>
         {/* <p>&nbsp;&nbsp;&nbsp;&nbsp;PhoneNumber: {user?.phonenumber}</p> */}
       </div>
       <div className="card">Notifications Here </div>
@@ -110,7 +131,7 @@ const Dashboard = () => {
             "Content-Type": "application/json",
           },
         });
-        console.log(response);
+
         if (response.ok) {
           const userData = await response.json();
           console.log(userData);
