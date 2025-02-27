@@ -149,6 +149,7 @@ const Signup = () => {
             <option value="">Select Role</option>
             <option value="1">Patient</option>
             <option value="0">Doctor</option>
+            <option value="2">Medical Staff</option>
           </select>
           {errors.role && <p className="error-message">{errors.role.message}</p>}
 
