@@ -11,22 +11,27 @@ interface SignUpFormValues {
   password: string;
   role: number;
   dateOfBirth: string;
+  specialization?: string;
+  licenseNumber?: string;
 }
 
 const Signup = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormValues>();
+  const { register, handleSubmit, watch, formState: { errors } } = useForm<SignUpFormValues>();
   const navigate = useNavigate();
   // Store backend error messages
   const [apiError, setApiError] = useState<string | null>(null); 
-
-
+  
+  // Watch the selected role in real-time
+  const selectedRole = Number(watch("role")); 
+  
   const onSubmit = async (data: SignUpFormValues) => {
     // Reset error before new request
     setApiError(null); 
-      //  console.log(data); //check the data content
     const formattedData = {
       ...data,
       role: Number(data.role), // Ensure role is sent as an integer
+      specialization: Number(data.role) === 0 ? data.specialization : null,
+      licenseNumber: Number(data.role) === 0 ? data.licenseNumber : null,
     };
       //  console.log(formattedData);// check formated data
     try {
@@ -152,6 +157,30 @@ const Signup = () => {
             <option value="2">Medical Staff</option>
           </select>
           {errors.role && <p className="error-message">{errors.role.message}</p>}
+
+          {selectedRole === 0 && ( 
+            <>
+              <label className="input-label" htmlFor="specialization">Specialization</label>
+              <input
+                className="text-field"
+                id="specialization"
+                type="text"
+                placeholder="Enter your specialization"
+                {...register('specialization', { required: selectedRole === 0 ? 'Specialization is required' : false })}
+    />
+              {errors.specialization && <p className="error-message">{errors.specialization.message}</p>}
+
+              <label className="input-label" htmlFor="licenseNumber">License Number</label>
+              <input
+                className="text-field"
+                id="licenseNumber"
+                type="text"
+                placeholder="Enter your license number"
+                {...register('licenseNumber', { required: selectedRole === 0 ? 'License number is required' : false })}
+              />
+              {errors.licenseNumber && <p className="error-message">{errors.licenseNumber.message}</p>}
+            </>
+          )}
 
           <label className="input-label" htmlFor="dateOfBirth">Date of Birth</label>
           <input
