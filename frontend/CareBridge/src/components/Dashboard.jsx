@@ -8,6 +8,7 @@ import Logo from "/logo.jpg";
 import DoctorImage from "../assets/Doctor.png";
 import PatientImage from "../assets/Patient.png";
 import "../../styles/Dashboard.css";
+import DoctorSchedule from "./DoctorSchedule";
 
 const Sidebar = ({ user, onSelectItem }) => {
   if (!user) return null; // Ensure user data is loaded
@@ -84,7 +85,7 @@ const TopBar = ({ user }) => {
   );
 };
 
-const DashboardContent = ({ selectedItem, user }) => {
+const DashboardContent = ({ selectedItem, user, token }) => {
   const roleMapping = { 0: "Doctor", 1: "Patient", 2: "Assistant" };
   const formattedDOB = user?.dateOfBirth ? new Date(user.dateOfBirth).toISOString().split("T")[0] : "N/A";
   const [doctors, setDoctors] = useState([]);
@@ -128,6 +129,11 @@ const DashboardContent = ({ selectedItem, user }) => {
     );
   }
 
+  //Doctor Schedule view
+  if (selectedItem === "Schedule" && user?.role === 0) {
+    return <DoctorSchedule user={user} token={token}/>;
+  }
+
   //default return
   return (
     <div className="dashboard-content">
@@ -167,10 +173,12 @@ const Dashboard = () => {
   const [user, setUser] = useState(null);
   const [selectedItem, setSelectedItem] = useState("Home"); // Default view
   const navigate = useNavigate();
+  const [token, setToken] = useState(localStorage.getItem("token"));
 
   useEffect(() => {
     const fetchUserData = async () => {
-      const token = localStorage.getItem("token");
+      setToken(localStorage.getItem("token"));
+      // const token = localStorage.getItem("token");
       if (!token) {
         navigate("/");
         return;
@@ -196,14 +204,14 @@ const Dashboard = () => {
     };
 
     fetchUserData();
-  }, [navigate]);
+  }, [navigate, token]);
 
   return (
     <div className="app-container">
       <Sidebar onSelectItem={setSelectedItem} user={user}/>
       <div className="dashboard">
         <TopBar user={user} />
-        <DashboardContent selectedItem={selectedItem} user={user} />
+        <DashboardContent selectedItem={selectedItem} user={user}  token={token} />
       </div>
     </div>
   );
