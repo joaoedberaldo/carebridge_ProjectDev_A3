@@ -17,6 +17,8 @@ namespace CareBridgeBackend.Data
         public DbSet<DoctorAssistant> DoctorAssistants { get; set; }
         public DbSet<DoctorReview> DoctorReviews { get; set; }
         public DbSet<DoctorSchedule> DoctorSchedules { get; set; }
+        public DbSet<Prescription> Prescriptions { get; set; }
+        public DbSet<Medication> Medications { get; set; }
 
         // Configuring relationships
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -106,6 +108,34 @@ namespace CareBridgeBackend.Data
                 .WithMany(u => u.DoctorSchedules)
                 .HasForeignKey(ds => ds.DoctorId)
                 .OnDelete(DeleteBehavior.Cascade);
+
+            // Many-to-One: Appointments to Prescriptions
+            modelBuilder.Entity<Prescription>()
+                .HasOne(p => p.Appointment)
+                .WithMany(a => a.Prescriptions)
+                .HasForeignKey(p => p.AppointmentId)
+                .OnDelete(DeleteBehavior.Cascade); 
+
+            // One-to-Many: Prescription to Medications
+            modelBuilder.Entity<Medication>()
+                .HasOne(m => m.Prescription)
+                .WithMany(p => p.Medications)
+                .HasForeignKey(m => m.PrescriptionId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            // One-to-Many: Doctor to Prescriptions
+            modelBuilder.Entity<Prescription>()
+                .HasOne(p => p.Doctor)
+                .WithMany(u => u.PrescriptionsAsDoctor)
+                .HasForeignKey(p => p.DoctorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // One-to-Many: Patient to Prescriptions
+            modelBuilder.Entity<Prescription>()
+                .HasOne(p => p.Patient)
+                .WithMany(u => u.PrescriptionsAsPatient)
+                .HasForeignKey(p => p.PatientId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Seed Data for Users
             modelBuilder.Entity<User>().HasData(
