@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
+using CareBridgeBackend.Models;
 
 namespace CareBridgeBackend.Controllers
 {
@@ -37,7 +38,9 @@ namespace CareBridgeBackend.Controllers
                 user.LastName,
                 user.Email,
                 user.Role,
-                user.PhoneNumber
+                user.PhoneNumber,
+                user.Specialization,
+                user.LicenseNumber
             });
         }
 
@@ -61,6 +64,12 @@ namespace CareBridgeBackend.Controllers
             user.FirstName = dto.FirstName ?? user.FirstName;
             user.LastName = dto.LastName ?? user.LastName;
             user.PhoneNumber = dto.PhoneNumber ?? user.PhoneNumber;
+
+            if (user.Role == UserRole.Doctor) 
+            {
+                user.Specialization = dto.Specialization ?? user.Specialization;
+                user.LicenseNumber = dto.LicenseNumber ?? user.LicenseNumber;
+            }
 
             await _context.SaveChangesAsync();
             return Ok(new { Message = "User updated successfully." });
