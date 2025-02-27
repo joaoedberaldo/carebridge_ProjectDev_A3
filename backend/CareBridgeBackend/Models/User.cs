@@ -59,5 +59,9 @@ namespace CareBridgeBackend.Models
 
         // Schedules
         public ICollection<DoctorSchedule> DoctorSchedules { get; set; } = new List<DoctorSchedule>();
+
+        //Prescriptions
+        public ICollection<Prescription> PrescriptionsAsDoctor { get; set; } = new List<Prescription>();
+        public ICollection<Prescription> PrescriptionsAsPatient { get; set; } = new List<Prescription>();
     }
 }
