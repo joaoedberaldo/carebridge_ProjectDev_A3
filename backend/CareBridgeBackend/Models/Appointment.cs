@@ -26,5 +26,7 @@ namespace CareBridgeBackend.Models
         public User Patient { get; set; }
 
         public string Notes { get; set; }
+
+        public ICollection<Prescription> Prescriptions { get; set; } = new List<Prescription>();
     }
 }

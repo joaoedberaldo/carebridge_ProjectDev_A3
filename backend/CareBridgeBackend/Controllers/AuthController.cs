@@ -50,7 +50,10 @@ namespace CareBridgeBackend.Controllers
                 Email = dto.Email,
                 Password = hashedPassword,
                 Role = dto.Role,
-                DateOfBirth = dto.DateOfBirth
+                DateOfBirth = dto.DateOfBirth,
+                PhoneNumber = dto.PhoneNumber,  
+                Specialization = dto.Specialization,  
+                LicenseNumber = dto.LicenseNumber
             };
 
             _context.Users.Add(user);
