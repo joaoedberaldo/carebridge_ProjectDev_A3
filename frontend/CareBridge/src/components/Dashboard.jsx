@@ -9,6 +9,8 @@ import DoctorImage from "../assets/Doctor.png";
 import PatientImage from "../assets/Patient.png";
 import "../../styles/Dashboard.css";
 import DoctorSchedule from "./DoctorSchedule";
+import FindDoctor from "./FindDoctor";
+import PatientSchedule from "./PatientSchedule";
 
 const Sidebar = ({ user, onSelectItem }) => {
   if (!user) return null; // Ensure user data is loaded
@@ -26,7 +28,7 @@ const Sidebar = ({ user, onSelectItem }) => {
       : // Doctor or Assistant
         [
           { icon: <FaHome />, text: "Home", key: "Home" },
-          { icon: <FaUser />, text: "Patients", key: "Patients" },
+          { icon: <FaUser />, text: "My Patients", key: "Patients" },
           { icon: <FaFileMedical />, text: "Medical Reports", key: "MedicalReports" },
           { icon: <FaCalendarAlt />, text: "Schedule", key: "Schedule" },
           { icon: <FaQuestionCircle />, text: "Help", key: "Help" },
@@ -110,28 +112,19 @@ const DashboardContent = ({ selectedItem, user, token }) => {
     }
   };
 
-  //All doctors return
+  //Find doctors view
   if (selectedItem === "FindDoctor") {
-    return (
-      <div className="dashboard-content">
-        <h2>Find a Doctor</h2>
-        <div className="doctor-list">
-          {doctors.map((doctor) => (
-            <div key={doctor.Id} className="doctor-card" onClick={() => alert(`Selected Doctor: ${doctor.firstName} ${doctor.lastName}`)}>
-              <h3>{doctor.firstName} {doctor.lastName}</h3>
-              <p>Specialization: {doctor.specialization || "N/A"}</p>
-              <p>License: {doctor.licenseNumber || "N/A"}</p>
-              <button className="book-button">Book Appointment</button>
-            </div>
-          ))}
-        </div>
-      </div>
-    );
+    return <FindDoctor user={user} token={token}/>;
   }
 
   //Doctor Schedule view
   if (selectedItem === "Schedule" && user?.role === 0) {
     return <DoctorSchedule user={user} token={token}/>;
+  }
+
+  //Patient Schedule view
+  if (selectedItem === "Schedule" && user?.role === 1) {
+    return <PatientSchedule user={user} token={token}/>;
   }
 
   //default return
@@ -150,18 +143,15 @@ const DashboardContent = ({ selectedItem, user, token }) => {
           <div className="card">Next Appointments Here</div>
         </>
       )}
-      {/* {selectedItem === "FindDoctor" && 
-        <div className="card">Find a Doctor Content</div>
-      } */}
       {selectedItem === "Patients" && 
         <div className="card">Patients Content</div>
       }
       {selectedItem === "MedicalReports" && 
         <div className="card">Medical Reports Content</div>
       }
-      {selectedItem === "Schedule" && 
+      {/* {selectedItem === "Schedule" && 
         <div className="card">Schedule Content</div>
-      }
+      } */}
       {selectedItem === "Help" && 
         <div className="card">Help Content</div>
       }

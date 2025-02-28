@@ -133,36 +133,3 @@ body {
   border-radius: 0.5rem;
 }
 
-/* Doctor Cards */
-.doctor-list {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
-}
-
-.doctor-card {
-  background: #fff;
-  border: 1px solid #ddd;
-  padding: 16px;
-  border-radius: 8px;
-  width: 300px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-.doctor-card:hover {
-  background: #f0f0f0;
-}
-
-.book-button {
-  margin-top: 8px;
-  background: #007bff;
-  color: white;
-  padding: 8px;
-  border: none;
-  cursor: pointer;
-}
-
-.book-button:hover {
-  background: #0056b3;
-}
