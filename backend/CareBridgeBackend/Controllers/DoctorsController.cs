@@ -1,4 +1,5 @@
 ﻿using CareBridgeBackend.Data;
+using CareBridgeBackend.DTOs;
 using CareBridgeBackend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -65,11 +66,56 @@ namespace CareBridgeBackend.Controllers
             return Ok(doctor);
         }
 
-        [HttpPost("{id}/schedule")]
-        public IActionResult AddDoctorSchedule(int id)
+        /// <summary>
+        /// Get all appointments by doctor ID
+        /// </summary>
+        [Authorize(Roles = "Doctor")]
+        [HttpGet("appointments")]
+        public async Task<IActionResult> GetMyAppointments()
         {
-            return Ok(new { Message = $"Schedule added for Doctor {id} (mock response)." });
+            var doctorId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var appointments = await _context.Appointments
+                .Where(a => a.DoctorId == doctorId)
+                .Select(a => new AppointmentDto
+                {
+                    Id = a.Id,
+                    AppointmentDate = a.AppointmentDate,
+                    Notes = a.Notes
+                })
+                .ToListAsync();
+
+            return Ok(appointments);
         }
-        
+
+        /// <summary>
+        /// Get all patients related to the current doctor
+        /// </summary>
+        [Authorize(Roles = "Doctor")]
+        [HttpGet("patients")]
+        public async Task<IActionResult> GetMyPatients()
+        {
+            var doctorId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            var patientIds = await _context.Appointments
+                .Where(a => a.DoctorId == doctorId)
+                .Select(a => a.PatientId)
+                .Distinct()
+                .ToListAsync();
+
+            var patients = await _context.Users
+                .Where(u => patientIds.Contains(u.Id))
+                .Select(u => new
+                {
+                    u.Id,
+                    u.FirstName,
+                    u.LastName,
+                    u.Email,
+                    u.PhoneNumber
+                })
+                .ToListAsync();
+
+            return Ok(patients);
+        }
     }
 }

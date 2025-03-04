@@ -41,6 +41,15 @@ namespace CareBridgeBackend.Controllers
             if (!doctorExists)
                 return BadRequest(new { Message = "Invalid doctor ID." });
 
+            // Check if the patient has a medical history, create if not
+            var medicalHistory = await _context.MedicalHistories.FirstOrDefaultAsync(mh => mh.PatientId == dto.PatientId);
+            if (medicalHistory == null)
+            {
+                medicalHistory = new MedicalHistory { PatientId = dto.PatientId };
+                _context.MedicalHistories.Add(medicalHistory);
+                await _context.SaveChangesAsync();
+            }
+
             var appointment = new Appointment
             {
                 AppointmentDate = dto.AppointmentDate ?? DateTime.UtcNow, // Default to now if null
