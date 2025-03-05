@@ -42,7 +42,10 @@ namespace CareBridgeBackend.Controllers
                 return BadRequest(new { Message = "Invalid doctor ID." });
 
             // Check if the patient has a medical history, create if not
-            var medicalHistory = await _context.MedicalHistories.FirstOrDefaultAsync(mh => mh.PatientId == dto.PatientId);
+            var medicalHistory = await _context.MedicalHistories
+         .Include(mh => mh.Appointments)
+         .FirstOrDefaultAsync(mh => mh.PatientId == dto.PatientId);
+
             if (medicalHistory == null)
             {
                 medicalHistory = new MedicalHistory { PatientId = dto.PatientId };
@@ -57,6 +60,9 @@ namespace CareBridgeBackend.Controllers
                 PatientId = dto.PatientId,
                 Notes = dto.Notes
             };
+
+            _context.Attach(medicalHistory);
+            medicalHistory.Appointments.Add(appointment);
 
             _context.Appointments.Add(appointment);
             await _context.SaveChangesAsync();
