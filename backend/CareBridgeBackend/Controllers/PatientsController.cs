@@ -99,7 +99,7 @@ namespace CareBridgeBackend.Controllers
                         AppointmentDate = a.AppointmentDate,
                         Notes = a.Notes
                     }).ToList(),
-                    Diagnostics = mh.PatientDiagnostics.Select(pd => new PatientDiagnosticDto
+                    PatientDiagnostics = mh.PatientDiagnostics.Select(pd => new PatientDiagnosticDto
                     {
                         Id = pd.Id,
                         DiagnosticTemplateId = pd.DiagnosticTemplateId,
