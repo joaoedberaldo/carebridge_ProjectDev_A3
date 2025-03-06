@@ -81,12 +81,32 @@ namespace CareBridgeBackend.Controllers
                 return Unauthorized(new { Message = "You can only view your own prescriptions." });
 
             var prescriptions = await _context.Prescriptions
-                .Where(p => p.PatientId == patientId)
-                .Include(p => p.Doctor)
-                .Include(p => p.Medications)
-                .ToListAsync();
+        .Where(p => p.PatientId == patientId)
+        .Include(p => p.Doctor)
+        .Include(p => p.Medications)
+        .ToListAsync();
 
-            return Ok(prescriptions);
+            var prescriptionDtos = prescriptions.Select(p => new PrescriptionDto
+            {
+                Id = p.Id,
+                PatientId = p.PatientId,
+                DoctorId = p.DoctorId,
+                DoctorName = p.Doctor != null ? $"{p.Doctor.FirstName} {p.Doctor.LastName}" : string.Empty,
+                Description = p.Description,
+                Date = p.Date,
+                Status = p.Status,
+                AppointmentId = p.AppointmentId,
+                Medications = p.Medications.Select(m => new MedicationDto
+                {
+                    Id = m.Id,
+                    Name = m.Name,
+                    Dosage = m.Dosage,
+                    Frequency = m.Frequency,
+                    Notes = m.Notes
+                }).ToList()
+            }).ToList();
+
+            return Ok(prescriptionDtos);
         }
 
         /// <summary>
