@@ -441,13 +441,13 @@ const DoctorSchedule: React.FC<DoctorScheduleProps> = ({ user, token }) => {
             <div className="schedule-actions">
               <button 
                 onClick={() => handleEditSchedule(schedule)}
-                className="edit-button"
+                className="edit-schedule-button"
               >
                 Edit
               </button>
               <button 
                 onClick={() => handleDeleteSchedule(schedule.id)}
-                className="delete-button"
+                className="delete-schedule-button"
               >
                 Delete
               </button>
