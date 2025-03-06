@@ -8,6 +8,8 @@ import Dashboard from './components/Dashboard';
 import Signup from './components/Signup';
 import Login from './components/Login';
 import EditProfile from './components/EditProfile';
+import 'react-toastify/dist/ReactToastify.css';
+import '../styles/toastify-custom.css';
 
 function App () {
     return (

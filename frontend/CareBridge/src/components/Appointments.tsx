@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from "react";
+import "../../styles/Appointments.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../../styles/PatientSchedule.css";
-import AppointmentDetailsModal from "./AppointmentDetailsModal"; // Import the new modal component
+import AppointmentDetailsModal from "./AppointmentDetailsModal"; // Reusing the existing modal component
 
 // Define interfaces for type safety
 interface AppointmentDto {
   id: number;
   appointmentDate: string;
   notes: string;
+  patient?: {
+    id: number;
+    firstName: string;
+    lastName: string;
+    email: string;
+  };
 }
 
-interface PatientScheduleProps {
-  user: { 
-    Id: number;
+// Define props for the component
+interface AppointmentsProps {
+  user: {
+    id: number;
     role: number;
     firstName?: string;
     lastName?: string;
@@ -21,7 +28,7 @@ interface PatientScheduleProps {
   token: string;
 }
 
-const PatientSchedule: React.FC<PatientScheduleProps> = ({ user, token }) => {
+const Appointments: React.FC<AppointmentsProps> = ({ user, token }) => {
   // State to store appointments
   const [appointments, setAppointments] = useState<AppointmentDto[]>([]);
   // State to track loading status
@@ -30,13 +37,11 @@ const PatientSchedule: React.FC<PatientScheduleProps> = ({ user, token }) => {
   const [error, setError] = useState<string | null>(null);
   // State to track which appointment is being viewed in the modal
   const [selectedAppointmentId, setSelectedAppointmentId] = useState<number | null>(null);
-
-
   // Use useEffect to fetch appointments when component mounts
   useEffect(() => {
     // Only fetch if we have a valid user ID and token
     if (user?.id && token) {
-      console.log("Initializing appointment fetch for user:", user.id);
+      console.log("Initializing appointment fetch for doctor:", user.id);
       fetchAppointments();
     } else {
       console.log("Missing user ID or token:", { userId: user?.id, hasToken: !!token });
@@ -50,9 +55,8 @@ const PatientSchedule: React.FC<PatientScheduleProps> = ({ user, token }) => {
     setError(null); // Reset any previous errors
     
     try {
-      // Make API call to get appointments for the current user
-      // FIXED: Use the correct API route based on your controller
-      const url = `http://localhost:5156/api/patients/${user.id}/appointments`;
+      // Make API call to get appointments for the current doctor
+      const url = `http://localhost:5156/api/doctors/appointments`;
       console.log("Fetching appointments from:", url);
       
       const response = await fetch(url, {
@@ -92,20 +96,21 @@ const PatientSchedule: React.FC<PatientScheduleProps> = ({ user, token }) => {
     }
   };
 
-  // Function to handle "Check Appointment" button click
-  const handleCheckAppointment = (appointmentId: number) => {
-    // This is a placeholder function that will be implemented later
-    console.log(`Checking appointment with ID: ${appointmentId}`);
+  // Function to handle viewing appointment details
+  const handleViewAppointment = (appointmentId: number) => {
+    console.log(`Viewing appointment with ID: ${appointmentId}`);
     setSelectedAppointmentId(appointmentId); // This will trigger the modal to open
-    
-    // Here you would typically navigate to a detailed view or
-    // fetch additional information about the appointment
   };
 
-    // Function to handle modal close
-    const handleCloseModal = () => {
-        setSelectedAppointmentId(null);
-      };
+  // Function to handle modal close
+  const handleCloseModal = () => {
+    setSelectedAppointmentId(null);
+  };
+
+  // Function to handle appointment updates (refresh the list)
+  const handleAppointmentUpdated = () => {
+    fetchAppointments();
+  };
 
   // Function to format date to a more readable format
   const formatDate = (dateString: string): string => {
@@ -118,19 +123,22 @@ const PatientSchedule: React.FC<PatientScheduleProps> = ({ user, token }) => {
     };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
+
   // Determine if an appointment is upcoming or past for display purposes
   const isUpcoming = (appointmentDate: string) => {
-      return new Date(appointmentDate) > new Date();
-    };
+    return new Date(appointmentDate) > new Date();
+  };
 
   return (
     <div className="dashboard-content">
       <h2>My Appointments</h2>
       <ToastContainer /> {/* Toast container for notifications */}
       
+
+      
       {/* Show loading indicator when fetching data */}
       {loading && (
-        <>
+        <div className="loading-container">
           <div className="loading-spinner">Loading appointments...</div>
           <button 
             onClick={fetchAppointments}
@@ -138,7 +146,7 @@ const PatientSchedule: React.FC<PatientScheduleProps> = ({ user, token }) => {
           >
             Retry
           </button>
-        </>
+        </div>
       )}
       
       {/* Show error message if one exists */}
@@ -173,34 +181,36 @@ const PatientSchedule: React.FC<PatientScheduleProps> = ({ user, token }) => {
             </div>
             <div className="appointment-details">
               <p><strong>Date & Time:</strong> {formatDate(appointment.appointmentDate)}</p>
+              {appointment.patient && (
+                <p><strong>Patient:</strong> {appointment.patient.firstName} {appointment.patient.lastName}</p>
+              )}
               <p><strong>Notes:</strong> {appointment.notes || "No notes provided"}</p>
             </div>
             <div className="appointment-actions">
               <button 
-                onClick={() => handleCheckAppointment(appointment.id)}
-                className="check-appointment-button"
+                onClick={() => handleViewAppointment(appointment.id)}
+                className="view-details-button"
               >
-                Check Appointment
+                View Details
               </button>
             </div>
           </div>
         ))}
-
       </div>
-            {/* Appointment Details Modal */}
-            {selectedAppointmentId && (
+      
+      {/* Appointment Details Modal */}
+      {selectedAppointmentId && (
         <AppointmentDetailsModal
-            appointmentId={selectedAppointmentId}
-            token={token}
-            userRole={user.role} // Using role directly from the user object
-            userId={user.id}
-            onClose={handleCloseModal}
-            onAppointmentUpdated={fetchAppointments} // Refresh appointments after update
+          appointmentId={selectedAppointmentId}
+          token={token}
+          userRole={user.role} // Using role directly from the user object
+          userId={user.id}
+          onClose={handleCloseModal}
+          onAppointmentUpdated={handleAppointmentUpdated} // Refresh appointments after update
         />
       )}
-
     </div>
   );
 };
 
-export default PatientSchedule;
+export default Appointments;

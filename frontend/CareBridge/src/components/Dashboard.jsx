@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
 import React, { useState, useEffect } from "react";
-import { FaHome, FaUserMd, FaFileMedical, FaCalendarAlt, FaQuestionCircle, FaUser } from "react-icons/fa";
+import { FaHome, FaUserMd, FaFileMedical, FaCalendarAlt, FaQuestionCircle, FaUser, FaCalendarCheck } from "react-icons/fa";
 import { Menu, MenuItem } from "@mui/material";
 import { useNavigate } from 'react-router-dom';
 import Logo from "/logo.jpg";
@@ -11,6 +11,8 @@ import "../../styles/Dashboard.css";
 import DoctorSchedule from "./DoctorSchedule";
 import FindDoctor from "./FindDoctor";
 import PatientSchedule from "./PatientSchedule";
+import Patients from "./Patients";
+import Appointments from "./Appointments";
 
 const Sidebar = ({ user, onSelectItem }) => {
   if (!user) return null; // Ensure user data is loaded
@@ -29,7 +31,8 @@ const Sidebar = ({ user, onSelectItem }) => {
         [
           { icon: <FaHome />, text: "Home", key: "Home" },
           { icon: <FaUser />, text: "My Patients", key: "Patients" },
-          { icon: <FaFileMedical />, text: "Medical Reports", key: "MedicalReports" },
+          { icon: <FaFileMedical />, text: "Medical Reports", key: "MedicalReports" }, 
+          { icon: <FaCalendarCheck />, text: "Appointments", key: "Appointments" },
           { icon: <FaCalendarAlt />, text: "Schedule", key: "Schedule" },
           { icon: <FaQuestionCircle />, text: "Help", key: "Help" },
         ];
@@ -112,21 +115,31 @@ const DashboardContent = ({ selectedItem, user, token }) => {
     }
   };
 
-  //Find doctors view
+  //Find doctors 
   if (selectedItem === "FindDoctor") {
     return <FindDoctor user={user} token={token}/>;
   }
 
-  //Doctor Schedule view
+  //Doctor Schedule (check/change availability)
   if (selectedItem === "Schedule" && user?.role === 0) {
     return <DoctorSchedule user={user} token={token}/>;
   }
 
-  //Patient Schedule view
+  //Patient Schedule (check my appointments)
   if (selectedItem === "Schedule" && user?.role === 1) {
     return <PatientSchedule user={user} token={token}/>;
   }
+  
+  //Get My Patients as a Doctor
+  if (selectedItem === "Patients" && user?.role === 0) {
+    return <Patients user={user} token={token}/>;
+  }
 
+  //Get My Appointments as a Doctor
+  if (selectedItem === "Appointments" && user?.role === 0) {
+    return <Appointments user={user} token={token}/>;
+  }
+  
   //default return
   return (
     <div className="dashboard-content">
@@ -139,8 +152,8 @@ const DashboardContent = ({ selectedItem, user, token }) => {
             <p>&nbsp;&nbsp;&nbsp;&nbsp;Role: {roleMapping[user?.role] || "Unknown"}</p>
             <p>&nbsp;&nbsp;&nbsp;&nbsp;Date of Birth: {formattedDOB}</p>
           </div>
-          <div className="card">Notifications Here</div>
-          <div className="card">Next Appointments Here</div>
+          {/* <div className="card">Notifications Here</div>
+          <div className="card">Next Appointments Here</div> */}
         </>
       )}
       {selectedItem === "Patients" && 
@@ -149,9 +162,6 @@ const DashboardContent = ({ selectedItem, user, token }) => {
       {selectedItem === "MedicalReports" && 
         <div className="card">Medical Reports Content</div>
       }
-      {/* {selectedItem === "Schedule" && 
-        <div className="card">Schedule Content</div>
-      } */}
       {selectedItem === "Help" && 
         <div className="card">Help Content</div>
       }
