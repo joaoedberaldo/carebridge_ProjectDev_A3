@@ -1,0 +1,26 @@
+.Toastify__toast {
+    border-radius: 4px;
+    font-family: inherit;
+  }
+  
+  /* Keep the default toast colors or use these if you prefer */
+  .Toastify__toast--success {
+    background-color: #d3f3d4;
+  }
+  
+  .Toastify__toast--error {
+    background-color: #f1c9c6;
+  }
+  
+  .Toastify__toast--info {
+    background-color: #c9e2f7;
+  }
+  
+  .Toastify__toast--warning {
+    background-color: #fae3c1;
+  }
+  
+  /* Optional: Style the progress bar */
+  .Toastify__progress-bar {
+    background: rgba(255, 255, 255, 0.7);
+  }

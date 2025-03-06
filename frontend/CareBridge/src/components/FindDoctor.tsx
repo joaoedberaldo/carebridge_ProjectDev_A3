@@ -3,7 +3,6 @@ import "../../styles/FindDoctor.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-
 // Define the interface for appointment form values
 interface AppointmentFormValues {
   appointmentDate: string;
@@ -14,7 +13,7 @@ interface AppointmentFormValues {
 
 // Define the interface for a doctor object
 interface Doctor {
-  Id: number;
+  id: number;
   firstName: string;
   lastName: string;
   specialization?: string;
@@ -23,22 +22,24 @@ interface Doctor {
 
 // Define the props that the component expects
 interface FindDoctorProps {
-  user: { Id: number; role: number }; // Expect a user object with Id and role
+  user: { 
+    id: number; 
+    role: number;
+  };
   token: string;
 }
 
 const FindDoctor: React.FC<FindDoctorProps> = ({ user, token }) => {
-  const [doctors, setDoctors] = useState<Doctor[]>([]); // List of doctors
-  const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null); // Selected doctor for booking
-  const [showModal, setShowModal] = useState<boolean>(false); // Controls modal visibility
+  const [doctors, setDoctors] = useState<Doctor[]>([]);
+  const [selectedDoctor, setSelectedDoctor] = useState<Doctor | null>(null);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const [formValues, setFormValues] = useState<AppointmentFormValues>({
     appointmentDate: "",
     notes: "",
     doctorId: 0,
-    patientId: 0, // Default to logged-in user ID
+    patientId: user?.id || 0,
   });
-  const [message, setMessage] = useState<string>(""); // Feedback message
-
+  
   // Fetch doctors from backend when component loads
   useEffect(() => {
     const fetchDoctors = async () => {
@@ -49,30 +50,37 @@ const FindDoctor: React.FC<FindDoctorProps> = ({ user, token }) => {
           setDoctors(data);
         } else {
           console.error("Failed to fetch doctors");
+          toast.error("Failed to load doctors list");
         }
       } catch (error) {
         console.error("Error fetching doctors", error);
+        toast.error("Could not connect to the server");
       }
     };
     fetchDoctors();
   }, []);
 
   const handleBookClick = (doctor: Doctor) => {
-    console.log("User data:", user); // Debugging user object
-    console.log("Doctor data:", doctor); // Debugging doctor object
-  
-    setSelectedDoctor(doctor); // Sets doctor but does NOT update immediately!
-  
-    // Directly use `doctor` and `user` instead of relying on state updates
-    setFormValues((prev) => ({ ...prev, doctorId: Number(doctor.id), patientId: Number(user.id) }));
-
-    console.log("FormValues:", formValues);
-    setShowModal(true); // Show modal when booking is clicked
+    // Set the selected doctor
+    setSelectedDoctor(doctor);
+    
+    // Update form values with doctor ID and patient ID
+    setFormValues({
+      ...formValues,
+      doctorId: doctor.id,
+      patientId: user.id
+    });
+    
+    // Show the appointment booking modal
+    setShowModal(true);
   };
 
-  // Handle input changes
+  // Handle input changes in the form
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormValues({ ...formValues, [e.target.name]: e.target.value });
+    setFormValues({
+      ...formValues,
+      [e.target.name]: e.target.value
+    });
   };
 
   // Handle form submission
@@ -80,7 +88,7 @@ const FindDoctor: React.FC<FindDoctorProps> = ({ user, token }) => {
     e.preventDefault();
   
     if (!formValues.appointmentDate) {
-      setMessage("Please select an appointment date.");
+      toast.error("Please select an appointment date");
       return;
     }
 
@@ -94,29 +102,21 @@ const FindDoctor: React.FC<FindDoctorProps> = ({ user, token }) => {
         body: JSON.stringify(formValues),
       });
   
-      // Check if the response is OK (200-299 range)
       if (!response.ok) {
-        const errorText = await response.text(); // Get raw error message
-        //  setMessage(`Failed to book appointment: ${errorText || "Unknown error"}`);
+        const errorText = await response.text();
         throw new Error(`Failed to book appointment: ${errorText || "Unknown error"}`);
-        // return;
       }
   
-      // Handle cases where the response is empty (e.g., 204 No Content)
-      let data;
-      try {
-        data = await response.json(); // Attempt to parse JSON
-      } catch (err) {
-        data = { Message: "Appointment booked successfully!" }; // Default message
-      }
-  
-      // setMessage(data.Message || "Appointment booked successfully!");
       toast.success("Appointment booked successfully!");
-      setShowModal(false); // Close modal on success
-      setFormValues({ appointmentDate: "", notes: "", doctorId: 0, patientId: user.Id });
+      setShowModal(false);
+      setFormValues({
+        appointmentDate: "",
+        notes: "",
+        doctorId: 0,
+        patientId: user.id
+      });
     } catch (error) {
       console.error("Error booking appointment", error);
-      // setMessage("An error occurred. Please try again.");
       toast.error(error.message || "Something went wrong!");
     }
   };
@@ -127,24 +127,28 @@ const FindDoctor: React.FC<FindDoctorProps> = ({ user, token }) => {
       
       <ToastContainer />
 
+      {/* Doctor List Grid */}
       <div className="doctor-list">
         {doctors.map((doctor) => (
-          <div key={doctor.Id} className="doctor-card">
-            <h3>{doctor.firstName} {doctor.lastName}</h3>
-            <p>Specialization: {doctor.specialization || "N/A"}</p>
-            <p>License: {doctor.licenseNumber || "N/A"}</p>
-            <button className="book-button" onClick={() => handleBookClick(doctor)}>
+          <div key={doctor.id} className="doctor-card">
+            <h3>Dr. {doctor.firstName} {doctor.lastName}</h3>
+            <p><strong>Specialization:</strong> {doctor.specialization || "General Practice"}</p>
+            <p><strong>License:</strong> {doctor.licenseNumber || "N/A"}</p>
+            <button 
+              className="book-button" 
+              onClick={() => handleBookClick(doctor)}
+            >
               Book Appointment
             </button>
           </div>
         ))}
       </div>
 
-      {/* MODAL - Appointment Form */}
+      {/* Appointment Booking Modal */}
       {showModal && selectedDoctor && (
         <div className="modal-overlay" onClick={() => setShowModal(false)}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <h3>Book Appointment with {selectedDoctor.firstName} {selectedDoctor.lastName}</h3>
+            <h3>Book Appointment with Dr. {selectedDoctor.firstName} {selectedDoctor.lastName}</h3>
             <form onSubmit={handleSubmit}>
               <label>Appointment Date & Time:</label>
               <input
@@ -157,14 +161,17 @@ const FindDoctor: React.FC<FindDoctorProps> = ({ user, token }) => {
 
               <label>Notes:</label>
               <textarea
+                className="notes"
                 name="notes"
                 value={formValues.notes}
                 onChange={handleChange}
                 placeholder="Enter any details for the doctor..."
               ></textarea>
 
-              <button type="submit">Confirm Booking</button>
-              <button type="button" onClick={() => setShowModal(false)}>Cancel</button>
+              <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                <button type="submit">Confirm Booking</button>
+                <button type="button" onClick={() => setShowModal(false)}>Cancel</button>
+              </div>
             </form>
           </div>
         </div>
