@@ -60,8 +60,6 @@ const AppointmentDetailsModal: React.FC<AppointmentModalProps> = ({
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<boolean>(false);
   // State for showing prescriptions modal
   const [showPrescriptionsModal, setShowPrescriptionsModal] = useState<boolean>(false);
-  // State for showing treatment modal (future implementation)
-  const [showTreatmentModal, setShowTreatmentModal] = useState<boolean>(false);
 
   // Fetch appointment details when modal opens
   useEffect(() => {
@@ -279,13 +277,6 @@ const AppointmentDetailsModal: React.FC<AppointmentModalProps> = ({
                       >
                         Prescriptions
                       </button>
-                      
-                      <button 
-                        className="treatment-button" 
-                        onClick={() => setShowTreatmentModal(true)}
-                      >
-                        Treatment
-                      </button>
                     </div>
                   )}
                   
@@ -377,27 +368,6 @@ const AppointmentDetailsModal: React.FC<AppointmentModalProps> = ({
             userRole={userRole}
             onClose={() => setShowPrescriptionsModal(false)}
           />
-        )}
-
-        {/* Treatment Modal - Future implementation */}
-        {showTreatmentModal && (
-          <div className="modal-backdrop">
-            <div className="modal-content">
-              <div className="modal-header">
-                <h2>Treatment Plan</h2>
-                <button className="close-button" onClick={() => setShowTreatmentModal(false)}>×</button>
-              </div>
-              <div className="modal-body">
-                <p>Treatment functionality will be implemented in a future update.</p>
-                <button 
-                  className="close-button-alt"
-                  onClick={() => setShowTreatmentModal(false)}
-                >
-                  Close
-                </button>
-              </div>
-            </div>
-          </div>
         )}
       </div>
     </div>
