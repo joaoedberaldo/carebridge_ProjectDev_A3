@@ -1,126 +1,4 @@
-/* .doctor-schedule-container {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background: #ffffff;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-  }
-  
-  .doctor-schedule-container h2 {
-    text-align: center;
-    margin-bottom: 15px;
-    font-size: 22px;
-    color: #333;
-  }
-  
-  .schedule-list {
-    margin-top: 20px;
-  }
-  
-  .schedule-item {
-    background: #eef4ff;
-    border: 1px solid #b3d4ff;
-    padding: 15px;
-    margin-bottom: 12px;
-    border-radius: 8px;
-    box-shadow: 2px 2px 8px rgba(0, 0, 0, 0.1);
-    transition: 0.3s ease-in-out;
-  }
-  
-  .schedule-item:hover {
-    background: #ddeaff;
-  }
-  
-  .schedule-item p {
-    margin: 5px 0;
-    font-size: 16px;
-    color: #333;
-  }
-  
-  .schedule-actions {
-    margin-top: 10px;
-    text-align: right;
-  }
-  
-  .schedule-actions button {
-    padding: 8px 14px;
-    font-size: 14px;
-    border: none;
-    cursor: pointer;
-    border-radius: 5px;
-    margin-left: 5px;
-  }
-  
-  .schedule-actions .edit-btn {
-    background: #f4c430;
-    color: #333;
-  }
-  
-  .schedule-actions .delete-btn {
-    background: #d9534f;
-    color: #fff;
-  }
-  
-  .schedule-actions .edit-btn:hover {
-    background: #e5b321;
-  }
-  
-  .schedule-actions .delete-btn:hover {
-    background: #c9302c;
-  }
-  
-  button {
-    padding: 10px 15px;
-    font-size: 16px;
-    cursor: pointer;
-    background: #007bff;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    transition: 0.3s;
-    margin-right: 20px;
-  }
-  
-  button:hover {
-    background: #0056b3;
-  }
-  
-  form {
-    background: #f8f9fa;
-    padding: 15px;
-    border-radius: 5px;
-    margin-top: 20px;
-  }
-  
-  form label {
-    font-size: 14px;
-    color: #555;
-  }
-  
-  form input {
-    width: 100%;
-    padding: 8px;
-    font-size: 14px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    margin-bottom: 10px;
-  }
-  
-  form button {
-    background: #28a745;
-  }
-  
-  form button[type="button"] {
-    background: #6c757d;
-  }
-  
-  form button:hover {
-    opacity: 0.5;
-  }
-   */
-
-   /* DoctorSchedule.css - Styling for the doctor's schedule management */
+/* doctor's schedule management */
 
 .dashboard-content {
   padding: 1rem;
@@ -260,7 +138,7 @@
   background-color: #e0e0e0;
 }
 
-.edit-button {
+.edit-schedule-button {
   background-color: #4A90E2;
   color: white;
   border: none;
@@ -275,7 +153,7 @@
   background-color: #3A7BC8;
 }
 
-.delete-button {
+.delete-schedule-button {
   background-color: #F44336;
   color: white;
   border: none;

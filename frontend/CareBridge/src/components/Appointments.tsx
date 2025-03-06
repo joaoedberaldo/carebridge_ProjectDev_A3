@@ -203,10 +203,10 @@ const Appointments: React.FC<AppointmentsProps> = ({ user, token }) => {
         <AppointmentDetailsModal
           appointmentId={selectedAppointmentId}
           token={token}
-          userRole={user.role} // Using role directly from the user object
+          userRole={user.role} 
           userId={user.id}
           onClose={handleCloseModal}
-          onAppointmentUpdated={handleAppointmentUpdated} // Refresh appointments after update
+          onAppointmentUpdated={handleAppointmentUpdated} 
         />
       )}
     </div>
