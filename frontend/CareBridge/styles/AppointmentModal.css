@@ -113,7 +113,7 @@
   width: 100%;
 }
 
-.edit-button, .prescriptions-button {
+.edit-button {
   background-color: #4A90E2;
   color: white;
   border: none;
@@ -125,11 +125,11 @@
   flex: 1;
 }
 
-.edit-button:hover, .prescriptions-button:hover {
+.edit-button:hover {
   background-color: #3A7BC8;
 }
 
-.treatment-button {
+.prescriptions-button {
   background-color: #36974e;
   color: white;
   border: none;
@@ -141,7 +141,7 @@
   flex: 1;
 }
 
-.treatment-button:hover {
+.prescriptions-button:hover {
   background-color: #2b8040;
 }
 
