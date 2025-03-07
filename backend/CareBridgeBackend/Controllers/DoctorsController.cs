@@ -111,7 +111,8 @@ namespace CareBridgeBackend.Controllers
                     u.FirstName,
                     u.LastName,
                     u.Email,
-                    u.PhoneNumber
+                    u.PhoneNumber,
+                    u.DateOfBirth
                 })
                 .ToListAsync();
 
