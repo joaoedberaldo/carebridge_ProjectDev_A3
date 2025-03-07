@@ -43,6 +43,11 @@ namespace CareBridgeBackend.Models
         [StringLength(100)]
         public string? LicenseNumber { get; set; }
 
+        // Office
+        public int? OfficeId { get; set; }
+        [ForeignKey(nameof(OfficeId))]
+        public Office? Office { get; set; }
+
         // Relationships
 
         // Appointment Navigation Properties
@@ -63,5 +68,7 @@ namespace CareBridgeBackend.Models
         //Prescriptions
         public ICollection<Prescription> PrescriptionsAsDoctor { get; set; } = new List<Prescription>();
         public ICollection<Prescription> PrescriptionsAsPatient { get; set; } = new List<Prescription>();
+
+        
     }
 }
