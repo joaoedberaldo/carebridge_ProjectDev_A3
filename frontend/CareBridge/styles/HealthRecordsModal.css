@@ -1,0 +1,320 @@
+
+/* Backdrop overlay for modals */
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  /* Modal containers */
+  .health-records-modal,
+  .patient-prescriptions-modal {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalFadeIn 0.3s ease;
+  }
+  
+  .modal-content {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    animation: modalFadeIn 0.3s ease;
+  }
+  
+  /* Animation for modal appearance */
+  @keyframes modalFadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Modal header */
+  .modal-header {
+    background-color: #4A90E2;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+  }
+  
+  /* Close button */
+  .close-button {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+  }
+  
+  .close-button:hover {
+    opacity: 0.8;
+  }
+  
+  .close-button-alt {
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.25rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-top: 1rem;
+  }
+  
+  /* Modal body */
+  .modal-body {
+    padding: 1.5rem;
+  }
+  
+  /* Loading and error states */
+  .modal-loading,
+  .modal-error,
+  .no-data-message {
+    text-align: center;
+    padding: 2rem;
+    color: #555;
+  }
+  
+  .modal-error {
+    color: #D32F2F;
+  }
+  
+  .modal-error button,
+  .retry-button {
+    background-color: #D32F2F;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 1rem;
+  }
+  
+  /* Patient information section */
+  .patient-info-section {
+    margin-bottom: 2rem;
+  }
+  
+  .patient-info-section h3 {
+    color: #333;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+    margin-top: 0;
+  }
+  
+  .patient-details {
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    padding: 1rem;
+  }
+  
+  .patient-details p {
+    margin: 0.5rem 0;
+    color: #555;
+  }
+  
+  /* Health record action buttons */
+  .health-record-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+  
+  .prescriptions-view-button,
+  .treatment-button {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+    flex: 1;
+    max-width: 200px;
+  }
+  
+  .prescriptions-view-button {
+    background-color: #4A90E2;
+    color: white;
+  }
+  
+  .prescriptions-view-button:hover {
+    background-color: #3A7BC8;
+  }
+  
+  .treatment-button {
+    background-color: #e68b37;
+    color: white;
+  }
+  
+  .treatment-button:hover {
+    background-color: #bd712a;
+  }
+  
+  /* Prescriptions list */
+  .prescriptions-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+  
+  .prescription-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .prescription-header {
+    background-color: #4A90E2;
+    color: white;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+  }
+  
+  .prescription-header-content h3 {
+    margin: 0;
+    font-size: 1.1rem;
+  }
+  
+  .prescription-header-content p {
+    margin: 0.25rem 0 0 0;
+    font-size: 0.9rem;
+  }
+  
+  /* Status badges */
+  .status-badge {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    font-weight: bold;
+  }
+  
+  .status-active {
+    background-color: #43A047;
+  }
+  
+  .status-completed {
+    background-color: #757575;
+  }
+  
+  .status-cancelled {
+    background-color: #D32F2F;
+  }
+  
+  /* Prescription summary */
+  .prescription-summary {
+    padding: 1rem;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+  }
+  
+  .prescription-summary p {
+    margin: 0;
+    color: #555;
+  }
+  
+  .view-more {
+    color: #4A90E2;
+    font-size: 0.9rem;
+    margin-top: 0.75rem !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .arrow {
+    font-size: 0.8rem;
+  }
+  
+  /* Medications container */
+  .medications-container {
+    padding: 1rem;
+    background-color: #f9f9f9;
+  }
+  
+  .medications-container h4 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #333;
+  }
+  
+  .medications-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .medication-item {
+    background-color: white;
+    border-radius: 4px;
+    padding: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .medication-details h5 {
+    margin: 0 0 0.5rem 0;
+    color: #4A90E2;
+  }
+  
+  .medication-details p {
+    margin: 0.3rem 0;
+    color: #555;
+    font-size: 0.95rem;
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 768px) {
+    .health-records-modal,
+    .patient-prescriptions-modal,
+    .modal-content {
+      width: 95%;
+      max-height: 85vh;
+    }
+    
+    .health-record-actions {
+      flex-direction: column;
+      align-items: center;
+    }
+    
+    .prescriptions-button,
+    .treatment-button {
+      max-width: none;
+      width: 100%;
+    }
+  }
