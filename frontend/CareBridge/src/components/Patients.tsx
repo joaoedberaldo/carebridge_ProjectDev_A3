@@ -1,7 +1,9 @@
+
 import React, { useState, useEffect } from "react";
 import "../../styles/Patients.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import HealthRecordsModal from "./HealthRecordsModal";
 
 // Define interface for patient data
 interface PatientDto {
@@ -10,6 +12,7 @@ interface PatientDto {
   lastName: string;
   email: string;
   phoneNumber: string;
+  dateOfBirth?: string;
 }
 
 // Define props for the component
@@ -30,8 +33,8 @@ const Patients: React.FC<PatientsProps> = ({ user, token }) => {
   const [loading, setLoading] = useState<boolean>(true);
   // State to track errors
   const [error, setError] = useState<string | null>(null);
-  // State to track selected patient for future health record functionality
-  const [selectedPatientId, setSelectedPatientId] = useState<number | null>(null);
+  // State to track selected patient for health records
+  const [selectedPatient, setSelectedPatient] = useState<PatientDto | null>(null);
 
   // Use useEffect to fetch patients when component mounts
   useEffect(() => {
@@ -92,14 +95,11 @@ const Patients: React.FC<PatientsProps> = ({ user, token }) => {
     }
   };
 
-  // Function to handle "View Health Record" button click
-  const handleViewHealthRecord = (patientId: number) => {
-    // This is a placeholder function that will be implemented later
-    console.log(`Viewing health record for patient with ID: ${patientId}`);
-    setSelectedPatientId(patientId);
-    
-    // For now, just show a toast notification since health records feature is not implemented yet
-    toast.info("Health records feature will be implemented in a future update.");
+  // Function to handle "View Health Records" button click
+  const handleViewHealthRecords = (patient: PatientDto) => {
+    console.log(`Viewing health records for patient with ID: ${patient.id}`);
+    console.log(patient)
+    setSelectedPatient(patient);
   };
 
   return (
@@ -153,15 +153,25 @@ const Patients: React.FC<PatientsProps> = ({ user, token }) => {
             </div>
             <div className="patient-actions">
               <button 
-                onClick={() => handleViewHealthRecord(patient.id)}
+                onClick={() => handleViewHealthRecords(patient)}
                 className="view-record-button"
               >
-                View Health Record
+                Health Records
               </button>
             </div>
           </div>
         ))}
       </div>
+
+      {/* Health Records Modal */}
+      {selectedPatient && (
+        <HealthRecordsModal
+          patient={selectedPatient}
+          token={token}
+          userRole={user.role}
+          onClose={() => setSelectedPatient(null)}
+        />
+      )}
     </div>
   );
 };
