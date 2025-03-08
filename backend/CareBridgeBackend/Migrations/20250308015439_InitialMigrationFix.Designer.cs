@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CareBridgeBackend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250202022536_AddMedicalHistoryEndpoints")]
-    partial class AddMedicalHistoryEndpoints
+    [Migration("20250308015439_InitialMigrationFix")]
+    partial class InitialMigrationFix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -210,6 +210,76 @@ namespace CareBridgeBackend.Migrations
                     b.ToTable("MedicalHistories");
                 });
 
+            modelBuilder.Entity("CareBridgeBackend.Models.Medication", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Dosage")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Frequency")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("nvarchar(50)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("Notes")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<int>("PrescriptionId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PrescriptionId");
+
+                    b.ToTable("Medications");
+                });
+
+            modelBuilder.Entity("CareBridgeBackend.Models.Office", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Offices");
+                });
+
             modelBuilder.Entity("CareBridgeBackend.Models.PatientDiagnostic", b =>
                 {
                     b.Property<int>("Id")
@@ -248,6 +318,45 @@ namespace CareBridgeBackend.Migrations
                     b.HasIndex("PatientId");
 
                     b.ToTable("PatientDiagnostics");
+                });
+
+            modelBuilder.Entity("CareBridgeBackend.Models.Prescription", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("AppointmentId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Date")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("nvarchar(1000)");
+
+                    b.Property<int>("DoctorId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PatientId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AppointmentId");
+
+                    b.HasIndex("DoctorId");
+
+                    b.HasIndex("PatientId");
+
+                    b.ToTable("Prescriptions");
                 });
 
             modelBuilder.Entity("CareBridgeBackend.Models.Treatment", b =>
@@ -312,6 +421,9 @@ namespace CareBridgeBackend.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int?>("OfficeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -328,6 +440,8 @@ namespace CareBridgeBackend.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OfficeId");
 
                     b.ToTable("Users");
 
@@ -498,6 +612,17 @@ namespace CareBridgeBackend.Migrations
                     b.Navigation("Patient");
                 });
 
+            modelBuilder.Entity("CareBridgeBackend.Models.Medication", b =>
+                {
+                    b.HasOne("CareBridgeBackend.Models.Prescription", "Prescription")
+                        .WithMany("Medications")
+                        .HasForeignKey("PrescriptionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Prescription");
+                });
+
             modelBuilder.Entity("CareBridgeBackend.Models.PatientDiagnostic", b =>
                 {
                     b.HasOne("CareBridgeBackend.Models.DiagnosticTemplate", "DiagnosticTemplate")
@@ -529,6 +654,32 @@ namespace CareBridgeBackend.Migrations
                     b.Navigation("Patient");
                 });
 
+            modelBuilder.Entity("CareBridgeBackend.Models.Prescription", b =>
+                {
+                    b.HasOne("CareBridgeBackend.Models.Appointment", "Appointment")
+                        .WithMany("Prescriptions")
+                        .HasForeignKey("AppointmentId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("CareBridgeBackend.Models.User", "Doctor")
+                        .WithMany("PrescriptionsAsDoctor")
+                        .HasForeignKey("DoctorId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("CareBridgeBackend.Models.User", "Patient")
+                        .WithMany("PrescriptionsAsPatient")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("Appointment");
+
+                    b.Navigation("Doctor");
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("CareBridgeBackend.Models.Treatment", b =>
                 {
                     b.HasOne("CareBridgeBackend.Models.PatientDiagnostic", "PatientDiagnostic")
@@ -540,6 +691,21 @@ namespace CareBridgeBackend.Migrations
                     b.Navigation("PatientDiagnostic");
                 });
 
+            modelBuilder.Entity("CareBridgeBackend.Models.User", b =>
+                {
+                    b.HasOne("CareBridgeBackend.Models.Office", "Office")
+                        .WithMany("Doctors")
+                        .HasForeignKey("OfficeId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Office");
+                });
+
+            modelBuilder.Entity("CareBridgeBackend.Models.Appointment", b =>
+                {
+                    b.Navigation("Prescriptions");
+                });
+
             modelBuilder.Entity("CareBridgeBackend.Models.MedicalHistory", b =>
                 {
                     b.Navigation("Appointments");
@@ -547,9 +713,19 @@ namespace CareBridgeBackend.Migrations
                     b.Navigation("PatientDiagnostics");
                 });
 
+            modelBuilder.Entity("CareBridgeBackend.Models.Office", b =>
+                {
+                    b.Navigation("Doctors");
+                });
+
             modelBuilder.Entity("CareBridgeBackend.Models.PatientDiagnostic", b =>
                 {
                     b.Navigation("Treatments");
+                });
+
+            modelBuilder.Entity("CareBridgeBackend.Models.Prescription", b =>
+                {
+                    b.Navigation("Medications");
                 });
 
             modelBuilder.Entity("CareBridgeBackend.Models.User", b =>
@@ -569,6 +745,10 @@ namespace CareBridgeBackend.Migrations
                     b.Navigation("DoctorsAssisted");
 
                     b.Navigation("MedicalHistory");
+
+                    b.Navigation("PrescriptionsAsDoctor");
+
+                    b.Navigation("PrescriptionsAsPatient");
                 });
 #pragma warning restore 612, 618
         }
