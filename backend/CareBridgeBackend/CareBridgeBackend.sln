@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35527.113 d17.12
+VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CareBridgeBackend", "CareBridgeBackend.csproj", "{0E9E01DB-EDB6-489C-9239-165328FF7F74}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CareBridgeBackend.Tests", "..\CareBridgeBackend.Tests\CareBridgeBackend.Tests.csproj", "{024B1773-F600-4712-AAA8-8764CE69A716}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{0E9E01DB-EDB6-489C-9239-165328FF7F74}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E9E01DB-EDB6-489C-9239-165328FF7F74}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E9E01DB-EDB6-489C-9239-165328FF7F74}.Release|Any CPU.Build.0 = Release|Any CPU
+		{024B1773-F600-4712-AAA8-8764CE69A716}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{024B1773-F600-4712-AAA8-8764CE69A716}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{024B1773-F600-4712-AAA8-8764CE69A716}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{024B1773-F600-4712-AAA8-8764CE69A716}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
