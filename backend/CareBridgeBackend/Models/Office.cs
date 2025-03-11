@@ -8,6 +8,10 @@ namespace CareBridgeBackend.Models
 
         [Required]
         [StringLength(255)]
+        public string Name { get; set; }
+
+        [Required]
+        [StringLength(255)]
         public string Address { get; set; }
 
         [StringLength(100)]
