@@ -28,6 +28,7 @@ namespace CareBridgeBackend.Controllers
         {
             var office = new Office
             {
+                Name = dto.Name,
                 Address = dto.Address,
                 City = dto.City,
                 State = dto.State,
@@ -57,6 +58,7 @@ namespace CareBridgeBackend.Controllers
             var officeDto = new OfficeDto
             {
                 Id = office.Id,
+                Name = office.Name,
                 Address = office.Address,
                 City = office.City,
                 State = office.State,
@@ -80,6 +82,7 @@ namespace CareBridgeBackend.Controllers
             if (office == null)
                 return NotFound(new { Message = "Office not found." });
 
+            office.Name = dto.Name;
             office.Address = dto.Address;
             office.City = dto.City;
             office.State = dto.State;

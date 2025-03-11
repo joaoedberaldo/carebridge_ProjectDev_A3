@@ -42,6 +42,15 @@ namespace CareBridgeBackend.Controllers
             // Hash the password
             var hashedPassword = PasswordHelper.HashPassword(dto.Password);
 
+            // Check if Office exists
+            Office? office = null;
+            if (dto.OfficeId.HasValue)
+            {
+                office = await _context.Offices.FindAsync(dto.OfficeId.Value);
+                if (office == null)
+                    return BadRequest(new { Message = "Invalid OfficeId. Office not found." });
+            }
+
             // Create new user
             var user = new User
             {
@@ -53,7 +62,8 @@ namespace CareBridgeBackend.Controllers
                 DateOfBirth = dto.DateOfBirth,
                 PhoneNumber = dto.PhoneNumber,  
                 Specialization = dto.Specialization,  
-                LicenseNumber = dto.LicenseNumber
+                LicenseNumber = dto.LicenseNumber,
+                OfficeId = dto.OfficeId
             };
 
             _context.Users.Add(user);
@@ -108,6 +118,7 @@ namespace CareBridgeBackend.Controllers
                 user.FirstName,
                 user.LastName,
                 user.Email,
+                user.PhoneNumber,
                 user.Role,
                 user.DateOfBirth
             });

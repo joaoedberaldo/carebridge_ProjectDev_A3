@@ -30,5 +30,6 @@ namespace CareBridgeBackend.DTOs
         public string? PhoneNumber { get; set; }
         public string? Specialization { get; set; }
         public string? LicenseNumber { get; set; }
+        public int? OfficeId { get; set; }
     }
 }
