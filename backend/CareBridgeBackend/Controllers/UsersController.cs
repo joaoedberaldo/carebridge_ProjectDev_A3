@@ -74,5 +74,29 @@ namespace CareBridgeBackend.Controllers
             await _context.SaveChangesAsync();
             return Ok(new { Message = "User updated successfully." });
         }
+
+        /// <summary>
+        /// Assign an Office to a Doctor (Doctor Id, Office Id)
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="officeId"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Doctor")]
+        [HttpPut("{id}/assign-office/{officeId}")]
+        public async Task<IActionResult> AssignOffice(int id, int officeId)
+        {
+            var doctor = await _context.Users.FindAsync(id);
+            if (doctor == null || doctor.Role != UserRole.Doctor)
+                return BadRequest(new { Message = "Invalid doctor ID." });
+
+            var office = await _context.Offices.FindAsync(officeId);
+            if (office == null)
+                return NotFound(new { Message = "Office not found." });
+
+            doctor.OfficeId = officeId;
+            await _context.SaveChangesAsync();
+
+            return Ok(new { Message = $"Doctor {id} assigned to Office {officeId}." });
+        }
     }
 }

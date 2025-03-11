@@ -244,6 +244,39 @@ namespace CareBridgeBackend.Migrations
                     b.ToTable("Medications");
                 });
 
+            modelBuilder.Entity("CareBridgeBackend.Models.Office", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("nvarchar(255)");
+
+                    b.Property<string>("City")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("State")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Offices");
+                });
+
             modelBuilder.Entity("CareBridgeBackend.Models.PatientDiagnostic", b =>
                 {
                     b.Property<int>("Id")
@@ -385,6 +418,9 @@ namespace CareBridgeBackend.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int?>("OfficeId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasMaxLength(255)
@@ -401,6 +437,8 @@ namespace CareBridgeBackend.Migrations
                         .HasColumnType("nvarchar(100)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("OfficeId");
 
                     b.ToTable("Users");
 
@@ -650,6 +688,16 @@ namespace CareBridgeBackend.Migrations
                     b.Navigation("PatientDiagnostic");
                 });
 
+            modelBuilder.Entity("CareBridgeBackend.Models.User", b =>
+                {
+                    b.HasOne("CareBridgeBackend.Models.Office", "Office")
+                        .WithMany("Doctors")
+                        .HasForeignKey("OfficeId")
+                        .OnDelete(DeleteBehavior.SetNull);
+
+                    b.Navigation("Office");
+                });
+
             modelBuilder.Entity("CareBridgeBackend.Models.Appointment", b =>
                 {
                     b.Navigation("Prescriptions");
@@ -660,6 +708,11 @@ namespace CareBridgeBackend.Migrations
                     b.Navigation("Appointments");
 
                     b.Navigation("PatientDiagnostics");
+                });
+
+            modelBuilder.Entity("CareBridgeBackend.Models.Office", b =>
+                {
+                    b.Navigation("Doctors");
                 });
 
             modelBuilder.Entity("CareBridgeBackend.Models.PatientDiagnostic", b =>
