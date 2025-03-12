@@ -1,0 +1,158 @@
+/* Help.css - Styling for the Help page */
+
+.coverage-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    overflow-y: auto; /* Ensure the help container itself can scroll */
+    max-height: calc(100vh - 80px); /* Adjust based on your header height */
+  }
+  
+  .coverage-intro {
+    font-size: 1.1rem;
+    color: #555;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+  
+  /* Loading and error states */
+  .loading-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+  }
+  
+  .loading-spinner {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #555;
+  }
+  
+  .retry-button {
+    background-color: #4A90E2;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+  }
+  
+  .retry-button:hover {
+    background-color: #3A7BC8;
+  }
+  
+  .error-message {
+    background-color: #FFEBEE;
+    color: #D32F2F;
+    padding: 1rem;
+    border-radius: 4px;
+    margin: 1rem 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .error-message button {
+    margin-top: 0.5rem;
+    background-color: #D32F2F;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .no-plans-message {
+    background-color: #E8F4FD;
+    padding: 2rem;
+    text-align: center;
+    border-radius: 4px;
+    color: #555;
+    font-size: 1.1rem;
+    margin: 2rem 0;
+  }
+  
+  /* Plans grid styling */
+  .plans-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 3rem;
+  }
+  
+  .plan-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .plan-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  .plan-header {
+    background-color: #4A90E2;
+    color: white;
+    padding: 1rem;
+  }
+  
+  .plan-header h3 {
+    margin: 0;
+    font-size: 1.3rem;
+  }
+  
+  .plan-details {
+    padding: 1.5rem;
+    flex-grow: 1;
+  }
+  
+  .plan-details p {
+    margin: 0;
+    color: #555;
+    line-height: 1.5;
+  }
+  
+  /* Additional help section */
+  .additional-help {
+    background-color: #F5F7FA;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 2rem 0;
+  }
+  
+  .additional-help h3 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+  
+  .contact-info {
+    background-color: white;
+    padding: 1.2rem;
+    border-radius: 4px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  }
+  
+  .contact-info p {
+    margin: 0.5rem 0;
+    color: #555;
+  }
+  
+  /* Responsive design */
+  @media (max-width: 768px) {
+    .plans-grid {
+      grid-template-columns: 1fr;
+    }
+    
+    .help-container {
+      padding: 1rem;
+    }
+  }
