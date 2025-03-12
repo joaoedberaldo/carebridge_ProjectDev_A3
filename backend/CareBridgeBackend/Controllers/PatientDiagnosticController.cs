@@ -50,7 +50,13 @@ namespace CareBridgeBackend.Controllers
                 return BadRequest(ModelState);
 
             // Get the logged-in doctor's ID
+            var userRole = User.FindFirstValue(ClaimTypes.Role);
             var doctorId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            if (userRole != "Doctor")
+            {
+                return Unauthorized(new { Message = "Only doctors can create diagnostics." });
+            }
 
             var diagnostic = new PatientDiagnostic
             {
