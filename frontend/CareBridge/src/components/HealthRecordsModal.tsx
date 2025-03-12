@@ -78,8 +78,8 @@ const HealthRecordsModal: React.FC<HealthRecordsModalProps> = ({
               <p><strong>Name:</strong> {patient.firstName} {patient.lastName}</p>
               <p><strong>Email:</strong> {patient.email}</p>
               <p><strong>Phone:</strong> {patient.phoneNumber || "Not provided"}</p>
-              {/* NOT WORKING <p><strong>Date of Birth:</strong> {formatDateOfBirth(patient.dateOfBirth)}</p>
-              <p><strong>Age:</strong> {calculateAge(patient.dateOfBirth)}</p> */}
+              <p><strong>Date of Birth:</strong> {formatDateOfBirth(patient.dateOfBirth)}</p>
+              <p><strong>Age:</strong> {calculateAge(patient.dateOfBirth)}</p>
             </div>
           </div>
 
