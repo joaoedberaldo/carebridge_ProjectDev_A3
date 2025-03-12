@@ -191,5 +191,8 @@ namespace CareBridgeBackend.Controllers
 
             return Unauthorized(new { Message = "You are not authorized to cancel this appointment." });
         }
+
+
+        
     }
 }

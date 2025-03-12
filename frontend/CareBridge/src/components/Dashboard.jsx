@@ -13,6 +13,7 @@ import FindDoctor from "./FindDoctor";
 import PatientSchedule from "./PatientSchedule";
 import Patients from "./Patients";
 import Appointments from "./Appointments";
+import Coverage from "./Coverage";
 
 const Sidebar = ({ user, onSelectItem }) => {
   if (!user) return null; // Ensure user data is loaded
@@ -25,16 +26,16 @@ const Sidebar = ({ user, onSelectItem }) => {
           { icon: <FaUserMd />, text: "Find a Doctor", key: "FindDoctor" },
           { icon: <FaFileMedical />, text: "Medical Reports", key: "MedicalReports" },
           { icon: <FaCalendarAlt />, text: "Schedule", key: "Schedule" },
-          { icon: <FaQuestionCircle />, text: "Help", key: "Help" },
+          { icon: <FaQuestionCircle />, text: "Coverage", key: "Coverage" },
         ]
       : // Doctor or Assistant
         [
           { icon: <FaHome />, text: "Home", key: "Home" },
           { icon: <FaUser />, text: "My Patients", key: "Patients" },
-          { icon: <FaFileMedical />, text: "Medical Reports", key: "MedicalReports" }, 
+          // { icon: <FaFileMedical />, text: "Medical Reports", key: "MedicalReports" }, 
           { icon: <FaCalendarCheck />, text: "Appointments", key: "Appointments" },
           { icon: <FaCalendarAlt />, text: "Schedule", key: "Schedule" },
-          { icon: <FaQuestionCircle />, text: "Help", key: "Help" },
+          { icon: <FaQuestionCircle />, text: "Coverage", key: "Coverage" },
         ];
 
   return (
@@ -82,7 +83,7 @@ const TopBar = ({ user }) => {
       <div className="topbar-icons">
         <FaUser className="icon" onClick={handleClick} />
         <Menu anchorEl={anchorEl} open={open} onClose={handleClose}>
-          <MenuItem onClick={handleProfileClick}>Profile</MenuItem>
+          <MenuItem onClick={handleProfileClick}>Edit Profile</MenuItem>
           <MenuItem onClick={handleLogout}>Logout</MenuItem>
         </Menu>
       </div>
@@ -139,32 +140,43 @@ const DashboardContent = ({ selectedItem, user, token }) => {
   if (selectedItem === "Appointments" && user?.role === 0) {
     return <Appointments user={user} token={token}/>;
   }
+
+  //Show Coverage page when Coverage menu item is selected
+  if (selectedItem === "Coverage") {
+    return <Coverage token={token}/>;
+  }
   
   //default return
   return (
     <div className="dashboard-content">
       {selectedItem === "Home" && (
         <>
-          <div className="card">Personal Information 
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;First Name: {user?.firstName}</p> 
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Last Name: {user?.lastName}</p> 
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Email: {user?.email}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Role: {roleMapping[user?.role] || "Unknown"}</p>
-            <p>&nbsp;&nbsp;&nbsp;&nbsp;Date of Birth: {formattedDOB}</p>
+        <h2>Personal Information</h2>
+        <div className="card-grid">
+          <div className="card"> 
+              <div className="card-header">
+                <h3> {roleMapping[user?.role] || "Unknown"}</h3>
+              </div>
+              <div className="card-details">
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>First Name:</strong> {user?.firstName}</p> 
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Last Name:</strong> {user?.lastName}</p> 
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Email:</strong> {user?.email}</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Phone Number:</strong> {user?.phoneNumber}</p>
+                <p>&nbsp;&nbsp;&nbsp;&nbsp;<strong>Date of Birth:</strong> {formattedDOB}</p>
+              </div>
           </div>
-          {/* <div className="card">Notifications Here</div>
-          <div className="card">Next Appointments Here</div> */}
+        </div>
         </>
       )}
-      {selectedItem === "Patients" && 
+      {/* {selectedItem === "Patients" && 
         <div className="card">Patients Content</div>
-      }
+      } */}
       {selectedItem === "MedicalReports" && 
         <div className="card">Medical Reports Content</div>
       }
-      {selectedItem === "Help" && 
+      {/* {selectedItem === "Help" && 
         <div className="card">Help Content</div>
-      }
+      } */}
     </div>
   );
 };
