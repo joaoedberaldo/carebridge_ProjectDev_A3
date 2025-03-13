@@ -31,6 +31,13 @@ namespace CareBridgeBackend.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
+            // Ensure user is a doctor
+            var userRole = User.FindFirstValue(ClaimTypes.Role);
+            if (userRole != "Doctor")
+            {
+                return Forbid(); 
+            }
+
             var doctorId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             var prescription = new Prescription

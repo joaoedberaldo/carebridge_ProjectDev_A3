@@ -1,4 +1,5 @@
 ﻿using CareBridgeBackend.Data;
+using CareBridgeBackend.DTOs;
 using CareBridgeBackend.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -24,25 +25,34 @@ namespace CareBridgeBackend.Controllers
         /// </summary>
         [Authorize(Roles = "Patient")]
         [HttpPost("{doctorId}")]
-        public async Task<IActionResult> PostReview(int doctorId, [FromBody] DoctorReview review)
+        public async Task<IActionResult> PostReview(int doctorId, [FromBody] DoctorReviewCreateDto reviewDto)
         {
-            var patientId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState); // Return validation errors
 
-            if (patientId != review.PatientId)
-                return Unauthorized(new { Message = "You can only submit reviews for your own appointments." });
+            var patientId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier));
 
             var doctorExists = await _context.Users.AnyAsync(u => u.Id == doctorId && u.Role == UserRole.Doctor);
             if (!doctorExists)
                 return NotFound(new { Message = "Doctor not found." });
 
-            review.DoctorId = doctorId;
-            review.ReviewDate = DateTime.UtcNow;
+            var review = new DoctorReview
+            {
+                DoctorId = doctorId,
+                PatientId = patientId,  // Take patientId from token, not DTO
+                Rating = reviewDto.Rating,
+                ReviewText = reviewDto.ReviewText,
+                ReviewDate = DateTime.UtcNow
+            };
 
             _context.DoctorReviews.Add(review);
             await _context.SaveChangesAsync();
 
-            return Ok(new { Message = "Review submitted successfully." });
+            return CreatedAtAction(nameof(GetReviews), new { doctorId = doctorId }, new { Message = "Review submitted successfully." });
         }
+
+
+
 
         /// <summary>
         /// Get all reviews for a doctor (Public)
@@ -52,6 +62,16 @@ namespace CareBridgeBackend.Controllers
         {
             var reviews = await _context.DoctorReviews
                 .Where(r => r.DoctorId == doctorId)
+                .Include(r => r.Patient)
+                .Select(r => new DoctorReviewDto
+                {
+                    Id = r.Id,
+                    Rating = r.Rating,
+                    ReviewText = r.ReviewText,
+                    PatientId = r.PatientId,
+                    PatientName = r.Patient.FirstName + " " + r.Patient.LastName,
+                    ReviewDate = r.ReviewDate
+                })
                 .ToListAsync();
 
             return Ok(reviews);
