@@ -151,14 +151,14 @@ const Signup = () => {
             id="role"
             {...register('role', { required: 'Role is required' })}
           >
-            <option value="">Select Role</option>
+            <option value="-1">Select Role</option>
             <option value="1">Patient</option>
             <option value="0">Doctor</option>
             <option value="2">Medical Staff</option>
           </select>
           {errors.role && <p className="error-message">{errors.role.message}</p>}
 
-          {selectedRole === 0 && ( 
+          { selectedRole === 0 && ( 
             <>
               <label className="input-label" htmlFor="specialization">Specialization</label>
               <input
