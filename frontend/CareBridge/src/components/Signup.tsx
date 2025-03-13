@@ -1,6 +1,9 @@
+// export default Signup;
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import '../../styles/signup.css';
 
 interface SignUpFormValues {
@@ -20,20 +23,25 @@ const Signup = () => {
   const navigate = useNavigate();
   // Store backend error messages
   const [apiError, setApiError] = useState<string | null>(null); 
+  // Add loading state
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   
   // Watch the selected role in real-time
   const selectedRole = Number(watch("role")); 
   
   const onSubmit = async (data: SignUpFormValues) => {
     // Reset error before new request
-    setApiError(null); 
+    setApiError(null);
+    // Set submitting state to true
+    setIsSubmitting(true);
+    
     const formattedData = {
       ...data,
       role: Number(data.role), // Ensure role is sent as an integer
       specialization: Number(data.role) === 0 ? data.specialization : null,
       licenseNumber: Number(data.role) === 0 ? data.licenseNumber : null,
     };
-      //  console.log(formattedData);// check formated data
+    
     try {
       const response = await fetch('http://localhost:5156/api/auth/register', {
         method: 'POST',
@@ -46,37 +54,54 @@ const Signup = () => {
       if (response.ok) {
         const responseData = await response.json();
         console.log(responseData);
-        navigate('/dashboard');
+        
+        // Show success toast message
+        toast.success('Registration successful! Redirecting to dashboard...', {
+          position: "top-center",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
+        
+        // Wait for 2 seconds before redirecting
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 2000);
       } else {
-        // log the server's response to the console.
-        // const errorData = await response.json();
-        // console.error('Failed to register user', errorData);
+        // Handle error responses
         const errorData = await response.json();
         console.error('Failed to register user', errorData);
 
-         // Extract meaningful error message
+        // Extract meaningful error message
         if (typeof errorData === 'string') {
-            setApiError(errorData); // If the API returns a simple string message
-          } else if (errorData.message) {
-            setApiError(errorData.message); // If API uses `{ message: "Error description" }`
-          } else if (errorData.errors) {
-            // Handle validation errors (like missing fields)
-            const firstError = Object.values(errorData.errors)[0] as string[];
-            setApiError(firstError ? firstError[0] : 'Something went wrong.');
-          } else {
-            setApiError('Registration failed. Please try again.');
+          setApiError(errorData); // If the API returns a simple string message
+        } else if (errorData.message) {
+          setApiError(errorData.message); // If API uses `{ message: "Error description" }`
+        } else if (errorData.errors) {
+          // Handle validation errors (like missing fields)
+          const firstError = Object.values(errorData.errors)[0] as string[];
+          setApiError(firstError ? firstError[0] : 'Something went wrong.');
+        } else {
+          setApiError('Registration failed. Please try again.');
         }
+        
+        // Show error toast
+        toast.error('Registration failed. Please check the form and try again.');
       }
     } catch (error) {
-      // console.error('Error connecting to the API', error);
       console.error('Error connecting to the API\n', error);
       setApiError('Could not connect to the server. Please try again later.');
+      toast.error('Could not connect to the server. Please try again later.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
-
   return (
     <div className='signup-body'>
+      <ToastContainer />
       <div className="signup-container">
         <h1>Get Started</h1>
         <p>Already have an account? <a href="/login" className="signup-link">Sign in</a></p>
@@ -84,7 +109,6 @@ const Signup = () => {
         {/* Show backend error */}
         {apiError && <p className="error-message api-error">{apiError}</p>} 
 
-        
         <form onSubmit={handleSubmit(onSubmit)}>
           <label className="input-label" htmlFor="firstName">First Name</label>
           <input
@@ -167,7 +191,7 @@ const Signup = () => {
                 type="text"
                 placeholder="Enter your specialization"
                 {...register('specialization', { required: selectedRole === 0 ? 'Specialization is required' : false })}
-    />
+              />
               {errors.specialization && <p className="error-message">{errors.specialization.message}</p>}
 
               <label className="input-label" htmlFor="licenseNumber">License Number</label>
@@ -192,8 +216,21 @@ const Signup = () => {
           {errors.dateOfBirth && <p className="error-message">{errors.dateOfBirth.message}</p>}
 
           <div className="button-container">
-            <button className="button" type="submit">Sign Up</button>
-            <button className="button cancel-button" type="button" onClick={() => navigate('/')}>Cancel</button>
+            <button 
+              className="button" 
+              type="submit" 
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? 'Signing Up...' : 'Sign Up'}
+            </button>
+            <button 
+              className="button cancel-button" 
+              type="button" 
+              onClick={() => navigate('/')}
+              disabled={isSubmitting}
+            >
+              Cancel
+            </button>
           </div>
         </form>
       </div>
