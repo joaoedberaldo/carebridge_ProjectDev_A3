@@ -212,6 +212,7 @@ For more details about the technical roadmap, see the (upcoming) [technical docu
 📬 Contact
 For any inquiries or collaboration opportunities, please reach out to us at:
 - Venicio Augusto Alves de Souza: venicio_augusto@hotmail.com
+- Joao Eduardo Beraldo Iada: joaoed.beraldo@gmail.com
 
 
 🚀 Let's build the future of healthcare together!
