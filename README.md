@@ -32,36 +32,6 @@
   </p>
 </div>
 
-
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
-
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
@@ -74,8 +44,6 @@
 <!-- Here's a blank template to get started. To avoid retyping too much info, do a search and replace with your text editor for the following: `joaoedberaldo`, `carebridge_ProjectDev_A3`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`, `project_license` -->
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 
 ### Built With
 
@@ -100,93 +68,101 @@ This project was developed using:
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
 <!-- GETTING STARTED -->
 ## Getting Started
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-### Installation
-
-1. Get a free API Key at [https://example.com](https://example.com)
+For you to build and run the project locally, follow these steps:
+1. Fork the Project
 2. Clone the repo
    ```sh
    git clone https://github.com/joaoedberaldo/carebridge_ProjectDev_A3.git
    ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-5. Change git remote url to avoid accidental pushes to base project
-   ```sh
-   git remote set-url origin joaoedberaldo/carebridge_ProjectDev_A3
-   git remote -v # confirm the changes
-   ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
+### Back-end
+1. Open the folder "backend"
+2. Inside the Visual Studio, open the folder named "CareBridgeBackend"
+3. Open a terminal
+4. Run the backend server
+    ```sh
+    dotnet run
+    ```
+### Front-end
+1. Open the folder "frontend"
+2. Inside Visual Studio COde, open the folder named "CareBridge"
+3. Install the dependencies
+    ```sh
+    npm install
+    ```
+4. Start the web application
+    ```sh
+    npm run dev
+    ```
+After setting everything up, you can check the web application in:
+- http://localhost:5173/
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## WebApplication Sample
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
-
-_For more examples, please refer to the [Documentation](https://example.com)_
+### Patient View
+#### Patient Schedule
+![patient-ScheduleScreen][patient-ScheduleScreen]
+#### FindDoctor
+![patient-FindDoctor][patient-FindDoctor]
+#### Register an Appointment
+![patient-RegisterAppointment][patient-RegisterAppointment]
+### Doctor View
+#### Doctor Appointments
+![doctor-Appointment][doctor-Appointment]
+#### My Patients
+![doctor-MyPatients][doctor-MyPatients]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- ROADMAP -->
 ## Roadmap
+ These are the features available in our project:
+ ### Patients Features
+- [X] Edit profile
+- [X] Search for a Doctor
+- [X] Book an Appointment
+- [X] Check Appointment information
+- [X] Check Exam results
+- [X] Check OHIP Services
+ ### Doctors Features
+- [X] Edit profile
+- [X] Check my patients
+    - [X] Check Prescriptions
+    - [X] Set Medical Report
+- [X] Check Appointments
+    - [X] Update Prescriptions
+    - [X] Update Appointment
+    - [X] Cancel Appointment
+- [X] Set Doctor availability
+- [X] Check OHIP Services
 
-- [ ] Feature 1
-- [ ] Feature 2
-- [ ] Feature 3
-    - [ ] Nested Feature
-
+<!-- 
 See the [open issues](https://github.com/joaoedberaldo/carebridge_ProjectDev_A3/issues) for a full list of proposed features (and known issues).
-
+ROADMAP -->
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 <!-- CONTRIBUTING -->
-## Contributing
+## Team
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
-Don't forget to give the project a star! Thanks again!
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+Our team has 4 collaborators:
+- Maria Griman Cachutt - Team Manager and Documentation Specialist
+- Joao Eduardo Beraldo Iada - Front-end Developer
+- Venicio Augusto Alves de Souza - Back-end Developer
+- Humza Sheikh - Documentation Specialist
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Top contributors:
+### Top developers of this project:
 
 <a href="https://github.com/joaoedberaldo/carebridge_ProjectDev_A3/graphs/contributors">
   <img src="https://contrib.rocks/image?repo=joaoedberaldo/carebridge_ProjectDev_A3" alt="contrib.rocks image" />
 </a>
-
 
 
 <!-- LICENSE -->
@@ -208,17 +184,6 @@ Project Link: [https://github.com/joaoedberaldo/carebridge_ProjectDev_A3](https:
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-* []()
-* []()
-* []()
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/joaoedberaldo/carebridge_ProjectDev_A3.svg?style=for-the-badge
@@ -235,6 +200,15 @@ Project Link: [https://github.com/joaoedberaldo/carebridge_ProjectDev_A3](https:
 [linkedin-url]: https://linkedin.com/in/joao-eduardo-beraldo-iada
 
 [product-screenshot]: ./docs/img/dashboardscreen.jpg
+
+<!-- Patient IMG -->
+[patient-ScheduleScreen]: ./docs/img/PatientScheduleScreen.jpg
+[patient-RegisterAppointment]: ./docs/img/PatientRegisterAppointment.jpg
+[patient-FindDoctor]: ./docs/img/PatientFindDoctor.jpg
+<!-- Doctor IMG -->
+[doctor-Appointment]: ./docs/img/DoctorAppointment.jpg
+[doctor-MyPatients]: ./docs/img/DoctorMyPatients.jpg
+
 <!-- Design -->
 [Figma]: https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white
 <!-- Code Editors -->
