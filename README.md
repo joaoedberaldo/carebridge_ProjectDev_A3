@@ -1,233 +1,257 @@
-<p align="center">
-  <a alt="Travel Ease logo" href="#"><img src="./docs/img/carebridge_logo.png"  width="200px"></a>
-</p>
+<a id="readme-top"></a>
 
-<h1 align="center">CareBridge NEWNEW</h1>
-<p align="center">Connecting Patients and Doctors across Ontario!</p>
-<br>
+<!-- PROJECT SHIELDS -->
+<!--
+*** I'm using markdown "reference style" links for readability.
+*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+*** See the bottom of this document for the declaration of the reference variables
+*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+*** https://www.markdownguide.org/basic-syntax/#reference-style-links
+-->
 
-<p align="center">
-  <!-- build -->
-  <img alt="GitHub Actions Workflow Status" src="https://img.shields.io/github/actions/workflow/status/conestoga-4term-capstone/carebridge/.github%2Fworkflows%2Fmain_sastravelplanner.yml">
-  <!-- release -->
-  <img alt="GitHub Release" src="https://img.shields.io/github/v/release/conestoga-4term-capstone/carebridge">
-  <!-- license -->
-  <img alt="License" src="https://img.shields.io/github/license/conestoga-4term-capstone/carebridge?color=cb4c83">
-  <!-- commits per month -->
-  <img alt="Commits per month" src="https://img.shields.io/github/commit-activity/m/conestoga-4term-capstone/carebridge?color=574ccb">
-  <!-- languages -->
-  <img alt="GitHub language count" src="https://img.shields.io/github/languages/count/conestoga-4term-capstone/carebridge?color=CB504C">
-  <!-- top language-->
-  <img alt="Top language" src="https://img.shields.io/github/languages/top/conestoga-4term-capstone/carebridge?color=cb744c">
-</p>
-<br>
+[![Contributors][contributors-shield]][contributors-url]
+[![Forks][forks-shield]][forks-url]
+[![Stargazers][stars-shield]][stars-url]
+[![Issues][issues-shield]][issues-url]
+[![project_license][license-shield]][license-url]
+[![LinkedIn][linkedin-shield]][linkedin-url]
+
+
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+  <a">
+    <img src="./docs/img/carebridge_logo.png"  width="500px">
+  </a>
+
+<h3 align="center">CareBridge</h3>
+
+  <p align="center">
+    A web-platform platform where patients can easily access their health records and schedule appointments with different doctors across Ontario.
+  </p>
+</div>
+
+
 
 <!-- TABLE OF CONTENTS -->
-<p align="center">
-  <a href="#-about-the-project">About the project</a> •
-  <a href="#-features">Features</a> •
-  <a href="#-roadmap">Roadmap</a> •
-  <a href="#-getting-started">Getting started</a> •
-  <a href="#-license">License</a> •
-  <a href="#-tech">Technical documentation</a>
-</p>
-
-## 💻 About the project
-
-CareBridge is a web application designed to facilitate appointment scheduling between patients and doctors in Ontario. Patients can search for doctors by specialty and location, while doctors can manage their schedules and patient appointments. The system also supports assistants who can manage doctors' agendas but only for their assigned doctors.
-
-
-<img alt="Home Screen" src="./docs/img/homescreen.png" width="700px">
-
-### Built with
-
-This project is developed using the following technologies:
-
-#### Frontend
-- [React][react] with [TypeScript][typescript] for building the UI
-- [React][react] Router for navigation.
-
-#### Backend
-- [ASP.NET Core][aspdotnetcore] Web API for handling business logic.
-- [Entity Framework Core][efcore] for database access and management.
-- [SQL Server][sqlserver] as the relational database
-- [xUnit][xunit] for unit testing
-- [Moq][moq] for mocking dependencies in tests
-- [JWT Authentication][jwt] for secure user access control
-- [Swagger][swagger] (OpenAPI) for API documentation
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+    <li><a href="#usage">Usage</a></li>
+    <li><a href="#roadmap">Roadmap</a></li>
+    <li><a href="#contributing">Contributing</a></li>
+    <li><a href="#license">License</a></li>
+    <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgments">Acknowledgments</a></li>
+  </ol>
+</details>
 
 
-## 🎨 Features
 
-In the version 1 (V1) of the project, it is possible to:
+<!-- ABOUT THE PROJECT -->
+## About The Project
 
-#### Patient Features:
-- [x] Search for doctors by specialty and location.
-- [x] Book an appointment online.
-- [x] View upcoming and past appointments.
-- [x] Cancel or reschedule appointments.
-- [x] Access records such as diagnostics and exam results.
-- [x] Provide feedback and reviews for doctors.
-- [x] Access the latest information on Ontario's Healthcare plans.
+![Product Name Screen Shot][product-screenshot]
 
-#### Doctor Features:
-- [x] Set availability and manage appointment slots.
-- [x] View patient history and past interactions.
-- [x] Assign or remove assistants.
-- [x] Cancel or reschedule appointments.
-- [x] Post diagnostics and results.
+  <p align="center">
+    CareBridge Platform is a fully operational web application where patients can access their health records, schedule appointments with various doctors, and receive exam results; doctors can manage their appointments, check old results from the patient and upload new exam results.
+  </p>
 
-#### Assistant Features:
-- [x] Manage the assigned doctor's schedule.
-- [x] Book and cancel appointments on behalf of the doctor.
-- [x] View upcoming and past appointments for assigned doctor.
+<!-- Here's a blank template to get started. To avoid retyping too much info, do a search and replace with your text editor for the following: `joaoedberaldo`, `carebridge_ProjectDev_A3`, `twitter_handle`, `linkedin_username`, `email_client`, `email`, `project_title`, `project_description`, `project_license` -->
 
-## 🎯 Roadmap
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-### Version 2 (V2)
 
-- **Calendar Integration**: Connect doctor and patient schedules with external calendar services (Google Calendar, Outlook, etc.).
-- **Notifications & Reminders**: Implement email and SMS notifications for appointment reminders.
-- **Improved Search & Filters**: Allow patients to refine doctor searches based on insurance acceptance, availability, and ratings.
-- **Admin Panel**: Provide admin users with tools to manage user roles, system settings, and overall platform activity.
 
-### Version 3 (V3)
+### Built With
 
-- **Telehealth Integration**: Enable virtual appointments with video conferencing capabilities.
-- **Payment Integration**: Implement an online payment system for paid consultations.
+This project was developed using:
 
-### Version 4 (V4)
+#### Design
+![Figma][Figma]
+#### Code Editors
+![Visual Studio Code][Visual Studio Code] ![Visual Studio][Visual Studio]
+#### Languages
+  ##### Front-End
+  ![HTML5][HTML5] ![CSS3][CSS3] ![TypeScript][TypeScript] ![React.js][React.js]
+  ##### Back-End
+  ![C#][C#] ![.Net][.Net]
+#### Database
+![MicrosoftSQLServer][MicrosoftSQLServer]
+#### API testing
+![Postman][Postman]
+#### Version Control
+![GitHub][GitHub]
 
-- **Multi-Province Support**: Expand the platform beyond Ontario to other provinces.
-- **AI-Powered Appointment Suggestions**: Suggest optimal appointment times based on patient and doctor availability.
-- **Health Monitoring Integration**: Integrate with wearable devices to allow doctors to track patient vitals remotely.
-- **Offline Support**: Allow limited functionality when users are offline, syncing data once reconnected.
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-## 🏁 Getting started
+
+
+<!-- GETTING STARTED -->
+## Getting Started
+
+This is an example of how you may give instructions on setting up your project locally.
+To get a local copy up and running follow these simple example steps.
 
 ### Prerequisites
 
-Before setting up the project locally, ensure you have the following prerequisites ready:
-
-1. **.NET 7+**: Install the latest .NET SDK from [here][.net7].
-
-2. **Node.js 20+**: Required for running the frontend. Download from [here][node20+].
-
-3. **SQL Server**: Install SQL Server and SQL Server Management Studio (SSMS) for database management. Follow installation instructions [here][sqlserver].
-
-Once you have all these tools installed, proceed with setting up the project.
+This is an example of how to list things you need to use the software and how to install them.
+* npm
+  ```sh
+  npm install npm@latest -g
+  ```
 
 ### Installation
 
-In order to run the project locally, follow these steps:
+1. Get a free API Key at [https://example.com](https://example.com)
+2. Clone the repo
+   ```sh
+   git clone https://github.com/joaoedberaldo/carebridge_ProjectDev_A3.git
+   ```
+3. Install NPM packages
+   ```sh
+   npm install
+   ```
+4. Enter your API in `config.js`
+   ```js
+   const API_KEY = 'ENTER YOUR API';
+   ```
+5. Change git remote url to avoid accidental pushes to base project
+   ```sh
+   git remote set-url origin joaoedberaldo/carebridge_ProjectDev_A3
+   git remote -v # confirm the changes
+   ```
 
-#### Backend Setup
-
-1. Clone the repository.
-
-```bash
-git clone https://github.com/conestoga-4term-capstone/carebridge.git
-```
-
-2. Change into the project directory:
-
-```bash
-cd carebridge-backend
-```
-
-3. Configure the backend settings:
-Update the appsettings.json file with the correct database connection string and JWT settings:
-
-```bash
-"ConnectionStrings": {
-    "DefaultConnection": "Server=localhost;Database=CareBridgeDb;Trusted_Connection=True;MultipleActiveResultSets=true;TrustServerCertificate=true"
-  },
-  "JwtSettings": {
-    "SecretKey": "A_VERY_LONG_AND_SECURE_SECRET_KEY_32_CHARS_MIN",
-    "Issuer": "CareBridge",
-    "Audience": "CareBridgeUsers"
-  }
-```
-
-4. Restore dependencies:
-
-```bash
-dotnet restore
-```
-
-5. Apply database migrations:
-
-```bash
-dotnet ef database update
-```
-
-6. Run the backend server:
-
-```bash
-dotnet run
-```
-
-#### Frontend Setup
-
-1. Change into the frontend directory:
-
-```bash
-cd carebridge-frontend
-```
-
-2. Install dependencies:
-
-```bash
-npm install
-```
-
-3. Start the development server:
-
-```bash
-npm run dev
-```
-
-Viewing the Application
-
-Once everything is set up, open your web browser and navigate to:
-
-- Frontend: http://localhost:3000
-
-- Backend API: http://localhost:5000/swagger (for API documentation)
-
-You are now ready to start working on the project locally! 😊
-
-## 📃 License
-
-Distributed under the MIT License. See [LICENSE](./LICENSE) for more information.
-
----
-
-## 🌟 Technical documentation
-
-For more details about the technical roadmap, see the (upcoming) [technical documentation](./docs/README.md).
-
----
-
-📬 Contact
-For any inquiries or collaboration opportunities, please reach out to us at:
-- Venicio Augusto Alves de Souza: venicio_augusto@hotmail.com
-- Joao Eduardo Beraldo Iada: joaoed.beraldo@gmail.com
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-🚀 Let's build the future of healthcare together!
 
-<!-- LINKS-->
+<!-- USAGE EXAMPLES -->
+## Usage
+
+Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+
+_For more examples, please refer to the [Documentation](https://example.com)_
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
-[react]: https://react.dev/
-[typescript]: https://www.typescriptlang.org/
-[aspdotnetcore]: https://dotnet.microsoft.com/en-us/apps/aspnet
-[efcore]: https://learn.microsoft.com/en-us/ef/core/
-[sqlserver]: https://www.microsoft.com/en-ca/sql-server/sql-server-downloads
-[xunit]: https://xunit.net/
-[moq]: https://github.com/devlooped/moq
-[swagger]: https://swagger.io/
-[jwt]: https://learn.microsoft.com/en-us/aspnet/core/security/authentication/configure-jwt-bearer-authentication?view=aspnetcore-9.0
-[.net7]: https://dotnet.microsoft.com/en-us/download/dotnet/7.0
-[node20+]: https://nodejs.org/en/blog/release/v20.9.0
+
+<!-- ROADMAP -->
+## Roadmap
+
+- [ ] Feature 1
+- [ ] Feature 2
+- [ ] Feature 3
+    - [ ] Nested Feature
+
+See the [open issues](https://github.com/joaoedberaldo/carebridge_ProjectDev_A3/issues) for a full list of proposed features (and known issues).
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTRIBUTING -->
+## Contributing
+
+Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+Don't forget to give the project a star! Thanks again!
+
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### Top contributors:
+
+<a href="https://github.com/joaoedberaldo/carebridge_ProjectDev_A3/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=joaoedberaldo/carebridge_ProjectDev_A3" alt="contrib.rocks image" />
+</a>
+
+
+
+<!-- LICENSE -->
+## License
+
+Distributed under the project_license. See `LICENSE.txt` for more information.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- CONTACT -->
+## Contact
+
+Joao Eduardo Beraldo Iada - [@Beraldo_xP](https://twitter.com/Beraldo_xP) - joaoed.beraldo@gmail.com
+
+Project Link: [https://github.com/joaoedberaldo/carebridge_ProjectDev_A3](https://github.com/joaoedberaldo/carebridge_ProjectDev_A3)
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
+<!-- ACKNOWLEDGMENTS -->
+## Acknowledgments
+
+* []()
+* []()
+* []()
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[contributors-shield]: https://img.shields.io/github/contributors/joaoedberaldo/carebridge_ProjectDev_A3.svg?style=for-the-badge
+[contributors-url]: https://github.com/joaoedberaldo/carebridge_ProjectDev_A3/graphs/contributors
+[forks-shield]: https://img.shields.io/github/forks/joaoedberaldo/carebridge_ProjectDev_A3.svg?style=for-the-badge
+[forks-url]: https://github.com/joaoedberaldo/carebridge_ProjectDev_A3/network/members
+[stars-shield]: https://img.shields.io/github/stars/joaoedberaldo/carebridge_ProjectDev_A3.svg?style=for-the-badge
+[stars-url]: https://github.com/joaoedberaldo/carebridge_ProjectDev_A3/stargazers
+[issues-shield]: https://img.shields.io/github/issues/joaoedberaldo/carebridge_ProjectDev_A3.svg?style=for-the-badge
+[issues-url]: https://github.com/joaoedberaldo/carebridge_ProjectDev_A3/issues
+[license-shield]: https://img.shields.io/github/license/joaoedberaldo/carebridge_ProjectDev_A3.svg?style=for-the-badge
+[license-url]: https://github.com/joaoedberaldo/carebridge_ProjectDev_A3/blob/master/LICENSE.txt
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://linkedin.com/in/joao-eduardo-beraldo-iada
+
+[product-screenshot]: ./docs/img/dashboardscreen.jpg
+<!-- Design -->
+[Figma]: https://img.shields.io/badge/figma-%23F24E1E.svg?style=for-the-badge&logo=figma&logoColor=white
+<!-- Code Editors -->
+[Visual Studio Code]: https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white
+[Visual Studio]: https://img.shields.io/badge/Visual%20Studio-5C2D91.svg?style=for-the-badge&logo=visual-studio&logoColor=white
+<!-- Languages -->
+  <!-- Back -->
+  [C#]: https://img.shields.io/badge/c%23-%23239120.svg?style=for-the-badge&logo=csharp&logoColor=white
+  [.Net]: https://img.shields.io/badge/.NET-5C2D91?style=for-the-badge&logo=.net&logoColor=white
+  <!-- Front -->
+  [HTML5]: https://img.shields.io/badge/html5-%23E34F26.svg?style=for-the-badge&logo=html5&logoColor=white
+  [CSS3]: https://img.shields.io/badge/css3-%231572B6.svg?style=for-the-badge&logo=css3&logoColor=white
+  [TypeScript]: https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white
+  [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
+<!-- Database -->
+[MicrosoftSQLServer]: https://img.shields.io/badge/Microsoft%20SQL%20Server-CC2927?style=for-the-badge&logo=microsoft%20sql%20server&logoColor=white
+<!-- API testing -->
+[Postman]: https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=postman&logoColor=white
+<!-- version control -->
+[GitHub]: https://img.shields.io/badge/github-%23121011.svg?style=for-the-badge&logo=github&logoColor=white
