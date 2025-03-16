@@ -2,7 +2,7 @@
   <a alt="Travel Ease logo" href="#"><img src="./docs/img/carebridge_logo.png"  width="200px"></a>
 </p>
 
-<h1 align="center">CareBridge</h1>
+<h1 align="center">CareBridge NEWNEW</h1>
 <p align="center">Connecting Patients and Doctors across Ontario!</p>
 <br>
 
