@@ -198,7 +198,7 @@ Project Link: [https://github.com/joaoedberaldo/carebridge_ProjectDev_A3](https:
 [issues-shield]: https://img.shields.io/github/issues/joaoedberaldo/carebridge_ProjectDev_A3.svg?style=for-the-badge
 [issues-url]: https://github.com/joaoedberaldo/carebridge_ProjectDev_A3/issues
 [license-shield]: https://img.shields.io/github/license/joaoedberaldo/carebridge_ProjectDev_A3.svg?style=for-the-badge
-[license-url]: https://github.com/joaoedberaldo/carebridge_ProjectDev_A3/blob/master/LICENSE.txt
+[license-url]: https://github.com/joaoedberaldo/carebridge_ProjectDev_A3/blob/master/LICENSE
 [linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
 [linkedin-url]: https://linkedin.com/in/joao-eduardo-beraldo-iada
 
