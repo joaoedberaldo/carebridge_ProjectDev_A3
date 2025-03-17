@@ -168,10 +168,15 @@ Our team has 4 collaborators:
 <!-- LICENSE -->
 ## License
 
-Distributed under the project_license. See `LICENSE.txt` for more information.
+This project is licensed under the MIT License. I chose this license because:
+- It's straightforward and widely understood
+- It allows others to freely use and build upon this work
+- It requires only that the original copyright notice be preserved
+- It provides a basic disclaimer of warranty
+
+See `LICENSE.txt` for more information.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-
 
 
 <!-- CONTACT -->
